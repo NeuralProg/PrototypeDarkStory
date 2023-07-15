@@ -122,8 +122,13 @@ public class PlayerController : MonoBehaviour
 
     private void MoveHorizontaly()
     {
-        if(!isDashing)
-            rb.velocity = new Vector2(inputDirection.x * moveSpeed, rb.velocity.y);
+        if (!isDashing)
+        {
+            if(inputDirection.x != 0f)
+                rb.velocity = new Vector2((inputDirection.x / Mathf.Abs(inputDirection.x)) * moveSpeed, rb.velocity.y);
+            else
+                rb.velocity = new Vector2(0f, rb.velocity.y);
+        }
 
         if(rb.velocity.x < -0.1f)
         {
