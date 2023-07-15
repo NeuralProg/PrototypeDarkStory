@@ -1,0 +1,36 @@
+The Sword Master is currently on 2 sprite sheets (file was getting to large and complicated, I might split into 2 medium files/sheets in the next update)
+
+Main Sprite Sheet
+
+1. Static Idle
+2. Idle
+3. Walk
+4. Run
+5. Run Fast
+6. Roll
+7. Roll Attack
+8. Slash 1
+9. Slash 2
+10. Slam Attack
+11. Spin Attack
+12. Block
+13. Dash
+14. Jump
+15. Transition from Jump to Fall
+16. Fall
+17. Jump teleport
+18. Appear from teleport
+19. Fall Attack
+20. Land/Crouch (use the 3rd frame for a static crouch)
+21. Ledge Grab
+22. Static Wall hold 
+23. Transition from Static wall hold to Wall slide
+24. Wall slide 
+25. Wall Slide Stop
+26. Hit
+27. Death
+
+On a seperate sprite sheet/aseprite 
+
+1.Ledge Grab (also in main sheet)
+2.Ledge Climb up
