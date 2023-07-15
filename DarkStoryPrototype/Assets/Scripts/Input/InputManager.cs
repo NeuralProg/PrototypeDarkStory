@@ -35,6 +35,24 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""041546b5-3835-4e99-925e-699970cedd94"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""582fe61e-396e-47d7-be72-ac5c39ca6482"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -147,6 +165,50 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                     ""action"": ""Direction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9144b662-c023-46b0-9499-395dcd300e76"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4cd13a0a-1781-4827-bbc7-7b27ab31713e"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c2deab78-8cc8-4bd0-ac03-4ce0fb591931"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""961cf27b-69bb-4985-b89b-967cfb24196d"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -167,6 +229,8 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Direction = m_Player.FindAction("Direction", throwIfNotFound: true);
+        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -229,11 +293,15 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Direction;
+    private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_Dash;
     public struct PlayerActions
     {
         private @InputManager m_Wrapper;
         public PlayerActions(@InputManager wrapper) { m_Wrapper = wrapper; }
         public InputAction @Direction => m_Wrapper.m_Player_Direction;
+        public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -246,6 +314,12 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
             @Direction.started += instance.OnDirection;
             @Direction.performed += instance.OnDirection;
             @Direction.canceled += instance.OnDirection;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -253,6 +327,12 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
             @Direction.started -= instance.OnDirection;
             @Direction.performed -= instance.OnDirection;
             @Direction.canceled -= instance.OnDirection;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -291,5 +371,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnDirection(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
 }
