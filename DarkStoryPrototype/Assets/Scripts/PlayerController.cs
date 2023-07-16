@@ -28,13 +28,13 @@ public class PlayerController : MonoBehaviour
 
     // Jump
     private bool isJumping = false;
-    private float jumpHeight = 15f;
+    private float jumpHeight = 17f;
     private float jumpCoyoteTime = 0.1f;
     private float jumpCoyoteTimer;
     private bool shouldPlayLandEffect = false;
 
     // Dash
-    private float dashDuration = 0.1f;
+    private float dashDuration = 0.2f;
     private float dashSpeedMultiplier = 3f;
     private float dashCooldown = 0.5f;
     private bool canDash;
@@ -202,9 +202,9 @@ public class PlayerController : MonoBehaviour
         }
         else if (isInPogo)
         {
-            if(inputDirection.x < 0.1f)
+            if(inputDirection.x < -0.5f)
                 transform.localScale = new Vector3(-1, 1, 1);
-            else if(inputDirection.x > 0.1f)
+            else if(inputDirection.x > 0.5f)
                 transform.localScale = new Vector3(1, 1, 1);
         }
     }

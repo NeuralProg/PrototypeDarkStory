@@ -227,6 +227,37 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.16083461}
   m_Size: {x: 0.43891203, y: 0.9133023}
   m_Direction: 0
+--- !u!1 &340112675
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 340112676}
+  m_Layer: 0
+  m_Name: PogoPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &340112676
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340112675}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.02, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 366862051}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &366862050
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,6 +291,7 @@ Transform:
   - {fileID: 1661083861}
   - {fileID: 1301938940}
   - {fileID: 1471301408}
+  - {fileID: 340112676}
   m_Father: {fileID: 1357797832}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -357,7 +389,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: -1489555874, guid: 4714d8a3744f54b85ab5cbc67fac7308, type: 3}
+  m_Sprite: {fileID: 1177015585, guid: 4714d8a3744f54b85ab5cbc67fac7308, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
