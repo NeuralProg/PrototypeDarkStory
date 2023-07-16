@@ -322,7 +322,7 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("Slash2");
         if (combo)
-            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.17f / 0.6f, 0, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.2f / 0.6f, 0, true, comboTimeAuthorized));
         else
             StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.2f / 0.6f, 0.1f));
     }
