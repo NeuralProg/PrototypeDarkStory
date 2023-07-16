@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
 
         if (comboState > 0)      // Slow the character whenever he attacks
         {
-            moveSpeed = 4 / comboState;
+            moveSpeed = 4 / (comboState-1);
         }
         else
         {
