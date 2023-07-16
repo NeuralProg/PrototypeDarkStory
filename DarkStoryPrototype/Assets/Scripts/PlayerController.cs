@@ -326,9 +326,9 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("SlamAttack");
         if (combo)
-            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.24f / 0.6f, 0.75f, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.25f / 0.6f, 0.75f, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.24f / 0.6f, 0.5f));
+            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.25f / 0.6f, 0.5f));
     }
     private void FallAttack()
     {
