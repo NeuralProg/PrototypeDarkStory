@@ -109,12 +109,11 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = Vector2.zero;
         }
-
         Checks();
 
-        if (isAttacking && isGrounded)
+        if (isAttacking && isGrounded)      // Slow the character whenever he attacks
         {
-            moveSpeed = 1.3f;
+            moveSpeed = 1f;
             slowOnAttackTimer = slowOnAttackTime;
         }
         else
@@ -125,7 +124,7 @@ public class PlayerController : MonoBehaviour
                 slowOnAttackTimer -= Time.deltaTime;
         }
 
-        rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -30, 30));
+        rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -30, 30));    // Limit the max Y speed
 
         anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         anim.SetBool("Grounded", isGrounded);
