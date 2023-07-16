@@ -362,6 +362,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator PogoTime()
     {
         isInPogo = true;
+        canDash = true;
         yield return new WaitForSeconds(pogoDuration);
         isInPogo = false;
     }
