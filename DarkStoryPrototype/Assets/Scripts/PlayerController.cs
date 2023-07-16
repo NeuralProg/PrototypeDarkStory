@@ -318,7 +318,7 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("SpinAttack");
         if (combo)
-            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.3f / 0.6f, 0.75f, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.3f / 0.6f, 0.5f, true, comboTimeAuthorized));
         else
             StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.3f / 0.6f, 0.1f));
     }
@@ -340,7 +340,8 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
         inAttackCooldown = false;
 
-        moveSpeed /= 3;
+        if(isGrounded)
+            moveSpeed /= 3;
 
         var collisionDetected = Physics2D.OverlapBoxAll(attackCollisionPosition.position, attackCollisionSize, 0, attackables);
         foreach(Collider2D attackable in collisionDetected)
@@ -363,7 +364,8 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        moveSpeed *= 3;
+        if (isGrounded)
+            moveSpeed *= 3;
 
         if(attackCooldown > 0.1f)
             yield return new WaitForSeconds(attackCooldown - 0.1f);
