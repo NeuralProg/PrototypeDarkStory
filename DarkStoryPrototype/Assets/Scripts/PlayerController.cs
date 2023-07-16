@@ -173,13 +173,20 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = new Vector2(0f, rb.velocity.y);
         }
 
-        if(rb.velocity.x < -0.1f && (!isAttacking || isInPogo))
+        if(rb.velocity.x < -0.1f && !isAttacking && !isInPogo)
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
-        else if(rb.velocity.x > 0.1f && (!isAttacking || isInPogo))
+        else if(rb.velocity.x > 0.1f && !isAttacking && !isInPogo)
         {
             transform.localScale = new Vector3(1, 1, 1);
+        }
+        else if (isInPogo)
+        {
+            if(inputDirection.x < 0.1f)
+                transform.localScale = new Vector3(-1, 1, 1);
+            else if(inputDirection.x > 0.1f)
+                transform.localScale = new Vector3(1, 1, 1);
         }
     }
 
