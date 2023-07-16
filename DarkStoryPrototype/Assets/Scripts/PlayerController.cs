@@ -272,10 +272,10 @@ public class PlayerController : MonoBehaviour
                         if (comboState == 1)
                             Slash2();
                         else if (comboState == 2)
-                            SpinAttack();
+                            SlamAttack();
                         else if (comboState == 3)
                         {
-                            SlamAttack();
+                            SpinAttack();
                             comboState = 0;
                         }
                     }
@@ -318,7 +318,7 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("SpinAttack");
         if (combo)
-            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.3f / 0.6f, 0, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.3f / 0.6f, 0.75f, true, comboTimeAuthorized));
         else
             StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.3f / 0.6f, 0.1f));
     }
@@ -326,7 +326,7 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("SlamAttack");
         if (combo)
-            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.27f / 0.6f, 0.75f, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.27f / 0.6f, 0, true, comboTimeAuthorized));
         else
             StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.27f / 0.6f, 0.5f));
     }
