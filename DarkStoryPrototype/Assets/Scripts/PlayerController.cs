@@ -317,15 +317,15 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("Slash1");
         if(combo)
-            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.28f / 0.6f, 0, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.25f / 0.6f, 0, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.28f / 0.6f, 0.1f));
+            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.25f / 0.6f, 0.1f));
     }
     private void Slash2(bool combo = true)
     {
         anim.SetTrigger("Slash2");
         if (combo)
-            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.15f / 0.6f, 0, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.18f / 0.6f, 0, true, comboTimeAuthorized));
         else
             StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.18f / 0.6f, 0.1f));
     }
