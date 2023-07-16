@@ -355,15 +355,19 @@ public class PlayerController : MonoBehaviour
         isAttacking = false;
         inAttackCooldown = true;
 
-        moveSpeed *= 2;
-
         if (shouldTriggerCombo)
         {
             comboTimer = comboTime;
             comboState += 1;
         }
 
-        yield return new WaitForSeconds(attackCooldown);
+        yield return new WaitForSeconds(0.1f);
+
+        moveSpeed *= 2;
+
+        if(attackCooldown > 0.1f)
+            yield return new WaitForSeconds(attackCooldown - 0.1f);
+
         inAttackCooldown = false;
     }
 
