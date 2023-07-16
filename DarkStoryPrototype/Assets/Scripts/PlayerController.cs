@@ -340,11 +340,9 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
         inAttackCooldown = false;
 
-        bool attackedFromGround = false;
         if (isGrounded)
         {
-            moveSpeed /= 3;
-            attackedFromGround = true;
+            StartCoroutine(SlowOnAttack());
         }
 
         var collisionDetected = Physics2D.OverlapBoxAll(attackCollisionPosition.position, attackCollisionSize, 0, attackables);
@@ -366,15 +364,15 @@ public class PlayerController : MonoBehaviour
             comboState += 1;
         }
 
-        yield return new WaitForSeconds(0.1f);
-
-        if (attackedFromGround)
-            moveSpeed *= 3;
-
-        if(attackCooldown > 0.1f)
-            yield return new WaitForSeconds(attackCooldown - 0.1f);
+        yield return new WaitForSeconds(attackCooldown);
 
         inAttackCooldown = false;
+    }
+    private IEnumerator SlowOnAttack()
+    {
+        moveSpeed /= 3;
+        yield return new WaitForSeconds(0.2f);
+        moveSpeed *= 3;
     }
 
     private void Pogo()
