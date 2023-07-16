@@ -63,6 +63,7 @@ public class PlayerController : MonoBehaviour
     private float pogoDuration = 0.15f;
     private float slowOnAttackTime = 0.1f;
     private float slowOnAttackTimer;
+    private bool launchedAttack = false;
 
     // Components reference
     private Rigidbody2D rb;
@@ -111,7 +112,7 @@ public class PlayerController : MonoBehaviour
         }
         Checks();
 
-        if (isAttacking && isGrounded)      // Slow the character whenever he attacks
+        if (launchedAttack && isGrounded)      // Slow the character whenever he attacks
         {
             moveSpeed = 1.5f;
             slowOnAttackTimer = slowOnAttackTime;
@@ -122,6 +123,7 @@ public class PlayerController : MonoBehaviour
             {
                 moveSpeed = 4f;
                 slowOnAttackTimer = 0;
+                launchedAttack = false;
             }
             else
                 slowOnAttackTimer -= Time.deltaTime;
@@ -352,6 +354,7 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator PerformAttack(Transform attackCollisionPosition, Vector2 attackCollisionSize, float attackDuration, float attackCooldown, bool shouldTriggerCombo = false, float comboTime = 0f)
     {
+        launchedAttack = true;
         isAttacking = true;
         inAttackCooldown = false;
 
@@ -367,6 +370,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(attackDuration);
         isAttacking = false;
         inAttackCooldown = true;
+        launchedAttack = false;
 
         if (shouldTriggerCombo)
         {
