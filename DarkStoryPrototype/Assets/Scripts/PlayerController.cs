@@ -61,6 +61,8 @@ public class PlayerController : MonoBehaviour
     private bool isInPogo = false;
     private float pogoHeight = 6f;
     private float pogoDuration = 0.15f;
+    private float slowOnAttackTime = 0.1f;
+    private float slowOnAttackTimer;
 
     // Components reference
     private Rigidbody2D rb;
@@ -109,14 +111,17 @@ public class PlayerController : MonoBehaviour
         }
         Checks();
 
-        if (comboState > 0)      // Slow the character whenever he attacks
+        if (isAttacking && isGrounded)      // Slow the character whenever he attacks
         {
-            moveSpeed = 4 / (comboState-1);
+            moveSpeed = 1f;
+            slowOnAttackTimer = slowOnAttackTime;
         }
         else
         {
-            if (comboState == 0 || !isGrounded)
+            if (slowOnAttackTimer <= 0 || !isGrounded)
                 moveSpeed = 4f;
+            else
+                slowOnAttackTimer -= Time.deltaTime;
         }
 
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -30, 30));    // Limit the max Y speed
