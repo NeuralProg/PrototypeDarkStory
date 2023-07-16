@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
 
     // Move
     [HideInInspector] public bool canMove = true;
-    [HideInInspector] public float moveSpeed = 6f;
+    [HideInInspector] public float moveSpeed = 4f;
 
     [Header("Checks")]
     [SerializeField] private Transform groundPos;
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
     // Jump
     private bool isJumping = false;
-    private float jumpHeight = 18f;
+    private float jumpHeight = 15f;
     private float jumpCoyoteTime = 0.1f;
     private float jumpCoyoteTimer;
     private bool shouldPlayLandEffect = false;
@@ -58,6 +58,9 @@ public class PlayerController : MonoBehaviour
     private int comboState = 0;
     private bool isAttacking = false;
     private bool inAttackCooldown = false;
+    private bool isInPogo = false;
+    private float pogoHeight = 8f;
+    private float pogoDuration = 0.1f;
 
     // Components reference
     private Rigidbody2D rb;
@@ -98,6 +101,7 @@ public class PlayerController : MonoBehaviour
             Jump();
             Dash();
             HandleAttacking();
+            Pogo();
         }
         else
         {
@@ -169,11 +173,11 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = new Vector2(0f, rb.velocity.y);
         }
 
-        if(rb.velocity.x < -0.1f && !isAttacking)
+        if(rb.velocity.x < -0.1f && (!isAttacking || isInPogo))
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
-        else if(rb.velocity.x > 0.1f && !isAttacking)
+        else if(rb.velocity.x > 0.1f && (!isAttacking || isInPogo))
         {
             transform.localScale = new Vector3(1, 1, 1);
         }
@@ -305,9 +309,9 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("SpinAttack");
         if (combo)
-            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.20f / 0.6f, 0, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.25f / 0.6f, 0, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.20f / 0.6f, 0.1f));
+            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.25f / 0.6f, 0.1f));
     }
     private void SlamAttack(bool combo = true)
     {
@@ -320,7 +324,7 @@ public class PlayerController : MonoBehaviour
     private void FallAttack()
     {
         anim.SetTrigger("FallAttack");
-        StartCoroutine(PerformAttack(fallAttackPos, fallAttackSize, 0.18f / 0.6f, 0f));
+        StartCoroutine(PerformAttack(fallAttackPos, fallAttackSize, 0.2f / 0.6f, 0f));
     }
     private IEnumerator PerformAttack(Transform attackCollisionPosition, Vector2 attackCollisionSize, float attackDuration, float attackCooldown, bool shouldTriggerCombo = false, float comboTime = 0f)
     {
@@ -330,7 +334,10 @@ public class PlayerController : MonoBehaviour
         var collisionDetected = Physics2D.OverlapBoxAll(attackCollisionPosition.position, attackCollisionSize, 0, attackables);
         foreach(Collider2D attackable in collisionDetected)
         {
-            print(attackable);
+            if(attackCollisionPosition == fallAttackPos && !isInPogo)
+            {
+                StartCoroutine(PogoTime());
+            }
         }
 
         yield return new WaitForSeconds(attackDuration);
@@ -345,6 +352,18 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(attackCooldown);
         inAttackCooldown = false;
+    }
+
+    private void Pogo()
+    {
+        if (isInPogo)
+            rb.velocity = new Vector2(rb.velocity.x, pogoHeight);
+    }
+    private IEnumerator PogoTime()
+    {
+        isInPogo = true;
+        yield return new WaitForSeconds(pogoDuration);
+        isInPogo = false;
     }
 
     #endregion
