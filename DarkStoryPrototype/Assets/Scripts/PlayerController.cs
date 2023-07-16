@@ -59,8 +59,8 @@ public class PlayerController : MonoBehaviour
     private bool isAttacking = false;
     private bool inAttackCooldown = false;
     private bool isInPogo = false;
-    private float pogoHeight = 8f;
-    private float pogoDuration = 0.1f;
+    private float pogoHeight = 6f;
+    private float pogoDuration = 0.15f;
 
     // Components reference
     private Rigidbody2D rb;
@@ -73,6 +73,8 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        moveSpeed = 4f; //-----------------------------------------------
+
         if(instance == null)
         {
             instance = this;
@@ -300,33 +302,33 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("Slash1");
         if(combo)
-            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.2f / 0.6f, 0, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.3f / 0.6f, 0, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.2f / 0.6f, 0.1f));
+            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.3f / 0.6f, 0.1f));
     }
     private void Slash2(bool combo = true)
     {
         anim.SetTrigger("Slash2");
         if (combo)
-            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.15f / 0.6f, 0, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.2f / 0.6f, 0, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.15f / 0.6f, 0.1f));
+            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.2f / 0.6f, 0.1f));
     }
     private void SpinAttack(bool combo = true)
     {
         anim.SetTrigger("SpinAttack");
         if (combo)
-            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.25f / 0.6f, 0, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.3f / 0.6f, 0, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.25f / 0.6f, 0.1f));
+            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.3f / 0.6f, 0.1f));
     }
     private void SlamAttack(bool combo = true)
     {
         anim.SetTrigger("SlamAttack");
         if (combo)
-            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.14f / 0.6f, 0.75f, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.24f / 0.6f, 0.75f, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.14f / 0.6f, 0.5f));
+            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.24f / 0.6f, 0.5f));
     }
     private void FallAttack()
     {
