@@ -119,7 +119,10 @@ public class PlayerController : MonoBehaviour
         else
         {
             if (slowOnAttackTimer <= 0 || !isGrounded)
+            {
                 moveSpeed = 4f;
+                slowOnAttackTimer = 0;
+            }
             else
                 slowOnAttackTimer -= Time.deltaTime;
         }
