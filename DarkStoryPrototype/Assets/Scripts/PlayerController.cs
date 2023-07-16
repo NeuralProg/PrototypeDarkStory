@@ -310,7 +310,7 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("Slash2");
         if (combo)
-            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.2f / 0.6f, 0, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.17f / 0.6f, 0, true, comboTimeAuthorized));
         else
             StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.2f / 0.6f, 0.1f));
     }
@@ -340,6 +340,8 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
         inAttackCooldown = false;
 
+        moveSpeed /= 2;
+
         var collisionDetected = Physics2D.OverlapBoxAll(attackCollisionPosition.position, attackCollisionSize, 0, attackables);
         foreach(Collider2D attackable in collisionDetected)
         {
@@ -352,6 +354,8 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(attackDuration);
         isAttacking = false;
         inAttackCooldown = true;
+
+        moveSpeed *= 2;
 
         if (shouldTriggerCombo)
         {
