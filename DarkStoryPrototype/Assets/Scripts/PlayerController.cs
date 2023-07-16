@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEditor.U2D.Path.GUIFramework;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
     private float jumpHeight = 18f;
     private float jumpCoyoteTime = 0.1f;
     private float jumpCoyoteTimer;
+    private bool shouldPlayLandEffect = false;
 
     // Dash
     private float dashDuration = 0.1f;
@@ -38,6 +40,24 @@ public class PlayerController : MonoBehaviour
     private bool canDash;
     private bool inDashCooldown = false;
     private bool isDashing = false;
+
+    [Header("Attacks")]
+    [SerializeField] private LayerMask attackables;
+    [SerializeField] private Transform slash1Pos;
+    [SerializeField] private Vector2 slash1Size;
+    [SerializeField] private Transform slash2Pos;
+    [SerializeField] private Vector2 slash2Size;
+    [SerializeField] private Transform spinAttackPos;
+    [SerializeField] private Vector2 spinAttackSize;
+    [SerializeField] private Transform slamAttackPos;
+    [SerializeField] private Vector2 slamAttackSize;
+    [SerializeField] private Transform fallAttackPos;
+    [SerializeField] private Vector2 fallAttackSize;
+    private float comboTimeAuthorized = 0.3f;
+    private float comboTimer = -1f;
+    private int comboState = 0;
+    private bool isAttacking = false;
+    private bool inAttackCooldown = false;
 
     // Components reference
     private Rigidbody2D rb;
@@ -77,6 +97,11 @@ public class PlayerController : MonoBehaviour
             MoveHorizontaly();
             Jump();
             Dash();
+            HandleAttacking();
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
         }
 
         Checks();
@@ -113,11 +138,25 @@ public class PlayerController : MonoBehaviour
         {
             jumpCoyoteTimer = jumpCoyoteTime;
             canDash = true;
+
+            if (shouldPlayLandEffect)
+            {
+                shouldPlayLandEffect = false;
+                anim.SetTrigger("LandAnim");
+                StartCoroutine(CannotMoveCooldown(0.2f / 0.6f));
+            }
         }
         else
         {
             jumpCoyoteTimer -= Time.deltaTime;
         }
+    }
+
+    private IEnumerator CannotMoveCooldown(float timeToWait)
+    {
+        canMove = false;
+        yield return new WaitForSeconds(timeToWait);
+        canMove = true;
     }
 
     private void MoveHorizontaly()
@@ -130,11 +169,11 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = new Vector2(0f, rb.velocity.y);
         }
 
-        if(rb.velocity.x < -0.1f)
+        if(rb.velocity.x < -0.1f && !isAttacking)
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
-        else if(rb.velocity.x > 0.1f)
+        else if(rb.velocity.x > 0.1f && !isAttacking)
         {
             transform.localScale = new Vector3(1, 1, 1);
         }
@@ -143,6 +182,9 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         bool canJump = (jumpCoyoteTimer >= 0) && !isJumping;
+
+        if (isFalling && rb.velocity.y < -27f)
+            shouldPlayLandEffect = true;
 
         if (canJump && controls.Player.Jump.WasPressedThisFrame())
         {
@@ -162,9 +204,9 @@ public class PlayerController : MonoBehaviour
 
     private void Dash()
     {
-        bool canDash = !isDashing && !inDashCooldown;
+        bool dashCondition = !isDashing && !inDashCooldown;
 
-        if (controls.Player.Dash.WasPressedThisFrame() && canDash)
+        if (controls.Player.Dash.WasPressedThisFrame() && canDash && dashCondition)
         {
             StartCoroutine(DashCooldown());
         }
@@ -186,6 +228,123 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = 5f;
         yield return new WaitForSeconds(dashCooldown);
         inDashCooldown = false;
+    }
+
+    private void HandleAttacking()
+    {
+        bool attackAvailable = !isAttacking && !inAttackCooldown;
+
+        if(comboTimer > -1f)
+        {
+            comboTimer -= Time.deltaTime;
+        }
+
+        if(!isAttacking && comboTimer <= 0)
+        {
+            comboState = 0;
+        }
+
+        if(attackAvailable && controls.Player.Attack.WasPressedThisFrame())
+        {
+            if (isGrounded)
+            {
+                if (inputDirection.y >= 0.2f)
+                {
+                    SlamAttack(false);
+                }
+                else
+                {
+                    if(comboTimer > 0)
+                    {
+                        if (comboState == 1)
+                            Slash2();
+                        else if (comboState == 2)
+                            SpinAttack();
+                        else if (comboState == 3)
+                        {
+                            SlamAttack();
+                            comboState = 0;
+                        }
+                    }
+                    else
+                    {
+                        Slash1();
+                    }
+                }
+            }
+            else
+            {
+                if (inputDirection.y <= -0.2f)
+                {
+                    FallAttack();
+                }
+                else
+                {
+                    SpinAttack(false);
+                }
+            }
+        }
+    }
+    private void Slash1(bool combo = true)
+    {
+        anim.SetTrigger("Slash1");
+        if(combo)
+            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.2f / 0.6f, 0, true, comboTimeAuthorized));
+        else
+            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.2f / 0.6f, 0.1f));
+    }
+    private void Slash2(bool combo = true)
+    {
+        anim.SetTrigger("Slash2");
+        if (combo)
+            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.15f / 0.6f, 0, true, comboTimeAuthorized));
+        else
+            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.15f / 0.6f, 0.1f));
+    }
+    private void SpinAttack(bool combo = true)
+    {
+        anim.SetTrigger("SpinAttack");
+        if (combo)
+            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.20f / 0.6f, 0, true, comboTimeAuthorized));
+        else
+            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.20f / 0.6f, 0.1f));
+    }
+    private void SlamAttack(bool combo = true)
+    {
+        anim.SetTrigger("SlamAttack");
+        if (combo)
+            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.14f / 0.6f, 0.75f, true, comboTimeAuthorized));
+        else
+            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.14f / 0.6f, 0.5f));
+    }
+    private void FallAttack()
+    {
+        anim.SetTrigger("FallAttack");
+        StartCoroutine(PerformAttack(fallAttackPos, fallAttackSize, 0.18f / 0.6f, 0f));
+    }
+    private IEnumerator PerformAttack(Transform attackCollisionPosition, Vector2 attackCollisionSize, float attackDuration, float attackCooldown, bool shouldTriggerCombo = false, float comboTime = 0f)
+    {
+        isAttacking = true;
+        inAttackCooldown = false;
+
+        var collisionDetected = Physics2D.OverlapBoxAll(attackCollisionPosition.position, attackCollisionSize, 0, attackables);
+        foreach(Collider2D attackable in collisionDetected)
+        {
+            print(attackable);
+        }
+
+        yield return new WaitForSeconds(attackDuration);
+        isAttacking = false;
+        inAttackCooldown = true;
+
+        if (shouldTriggerCombo)
+        {
+            comboTimer = comboTime;
+            comboState += 1;
+        }
+
+        yield return new WaitForSeconds(attackCooldown);
+        inAttackCooldown = false;
     }
 
     #endregion
