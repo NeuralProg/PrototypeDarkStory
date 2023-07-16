@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
     private bool isInPogo = false;
     private float pogoHeight = 6f;
     private float pogoDuration = 0.15f;
-    private float slowOnAttackTime = 0.2f;
+    private float slowOnAttackTime = 0.1f;
     private float slowOnAttackTimer;
 
     // Components reference
