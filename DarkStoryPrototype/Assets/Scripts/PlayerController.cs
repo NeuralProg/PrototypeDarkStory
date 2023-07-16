@@ -327,7 +327,7 @@ public class PlayerController : MonoBehaviour
         if (combo)
             StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.18f / 0.6f, 0, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.2f / 0.6f, 0.1f));
+            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.18f / 0.6f, 0.1f));
     }
     private void SpinAttack(bool combo = true)
     {
