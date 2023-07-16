@@ -340,7 +340,7 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
         inAttackCooldown = false;
 
-        moveSpeed /= 2;
+        moveSpeed /= 3;
 
         var collisionDetected = Physics2D.OverlapBoxAll(attackCollisionPosition.position, attackCollisionSize, 0, attackables);
         foreach(Collider2D attackable in collisionDetected)
@@ -363,7 +363,7 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        moveSpeed *= 2;
+        moveSpeed *= 3;
 
         if(attackCooldown > 0.1f)
             yield return new WaitForSeconds(attackCooldown - 0.1f);
