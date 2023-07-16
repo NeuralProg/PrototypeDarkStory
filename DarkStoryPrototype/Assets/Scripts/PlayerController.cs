@@ -270,7 +270,7 @@ public class PlayerController : MonoBehaviour
                     if(comboTimer > 0)
                     {
                         if (comboState == 1)
-                            Slash2();
+                            Slash1();
                         else if (comboState == 2)
                             SlamAttack();
                         else if (comboState == 3)
@@ -281,7 +281,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
-                        Slash1();
+                        Slash2();
                     }
                 }
             }
