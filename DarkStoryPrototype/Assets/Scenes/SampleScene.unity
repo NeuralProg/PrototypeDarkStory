@@ -189,7 +189,7 @@ MonoBehaviour:
   slamAttackPos: {fileID: 1301938940}
   slamAttackSize: {x: 2, y: 1.5}
   fallAttackPos: {fileID: 1471301408}
-  fallAttackSize: {x: 1.15, y: 0.8}
+  fallAttackSize: {x: 1.15, y: 1}
 --- !u!50 &219279200
 Rigidbody2D:
   serializedVersion: 4
@@ -848,7 +848,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1471301407}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.992, y: -0.39, z: 0.01491845}
+  m_LocalPosition: {x: -0.992, y: -0.13, z: 0.01491845}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -879,7 +879,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.15, y: 0.8}
+  m_Size: {x: 1.15, y: 1}
   m_EdgeRadius: 0
 --- !u!1 &1661083860
 GameObject:
@@ -1168,7 +1168,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1848092080}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.2942295, y: -0.6256031, z: 0.00073048635}
+  m_LocalPosition: {x: -5.2942295, y: -1.23, z: 0.00073048635}
   m_LocalScale: {x: 2.818881, y: 0.5233, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1279,7 +1279,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1982748627}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.1242298, y: 1.4643968, z: 0.00073048635}
+  m_LocalPosition: {x: -1.1242298, y: 0.32, z: 0.00073048635}
   m_LocalScale: {x: 2.818881, y: 0.5233, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
