@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
         }
         Checks();
 
-        if (isAttacking && isGrounded)      // Slow the character whenever he attacks
+        if (isAttacking && isGrounded && comboState > 0)      // Slow the character whenever he attacks
         {
             moveSpeed = 1f;
             slowOnAttackTimer = slowOnAttackTime;
