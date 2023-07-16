@@ -330,9 +330,9 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("SpinAttack");
         if (combo)
-            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.3f / 0.6f, 0.5f, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.22f / 0.6f, 0.5f, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.3f / 0.6f, 0.1f));
+            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.22f / 0.6f, 0.1f));
     }
     private void SlamAttack(bool combo = true)
     {
