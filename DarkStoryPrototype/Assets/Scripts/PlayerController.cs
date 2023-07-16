@@ -73,8 +73,6 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        moveSpeed = 4f; //-----------------------------------------------
-
         if(instance == null)
         {
             instance = this;
@@ -111,6 +109,11 @@ public class PlayerController : MonoBehaviour
         }
 
         Checks();
+
+        if (isAttacking)
+            moveSpeed = 1.3f;
+        else
+            moveSpeed = 4f;
 
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -30, 30));
 
@@ -340,11 +343,6 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
         inAttackCooldown = false;
 
-        if (isGrounded)
-        {
-            StartCoroutine(SlowOnAttack());
-        }
-
         var collisionDetected = Physics2D.OverlapBoxAll(attackCollisionPosition.position, attackCollisionSize, 0, attackables);
         foreach(Collider2D attackable in collisionDetected)
         {
@@ -367,12 +365,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(attackCooldown);
 
         inAttackCooldown = false;
-    }
-    private IEnumerator SlowOnAttack()
-    {
-        moveSpeed /= 3;
-        yield return new WaitForSeconds(0.2f);
-        moveSpeed *= 3;
     }
 
     private void Pogo()
