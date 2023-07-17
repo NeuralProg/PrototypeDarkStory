@@ -76,6 +76,8 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 0.5f;
+
         if(instance == null)
         {
             instance = this;
