@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &131001280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 131001281}
+  m_Layer: 0
+  m_Name: PogoPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &131001281
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131001280}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1, y: -0.36, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 366862051}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &219279197
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,7 +207,7 @@ MonoBehaviour:
   groundPos: {fileID: 2018374366}
   groundMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 3072
   attackables:
     serializedVersion: 2
     m_Bits: 384
@@ -189,7 +220,9 @@ MonoBehaviour:
   slamAttackPos: {fileID: 1301938940}
   slamAttackSize: {x: 2, y: 1.5}
   fallAttackPos: {fileID: 1471301408}
-  fallAttackSize: {x: 1.15, y: 1}
+  fallAttackSize: {x: 1.15, y: 1.3}
+  pogoPoint: {fileID: 131001281}
+  pogoSlashEffect: {fileID: 3521671826601994075, guid: 59747f74adabe864395e54639c8d9922, type: 3}
 --- !u!50 &219279200
 Rigidbody2D:
   serializedVersion: 4
@@ -227,37 +260,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.16083461}
   m_Size: {x: 0.43891203, y: 0.9133023}
   m_Direction: 0
---- !u!1 &340112675
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 340112676}
-  m_Layer: 0
-  m_Name: PogoPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &340112676
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340112675}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.02, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 366862051}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &366862050
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,7 +293,7 @@ Transform:
   - {fileID: 1661083861}
   - {fileID: 1301938940}
   - {fileID: 1471301408}
-  - {fileID: 340112676}
+  - {fileID: 131001281}
   m_Father: {fileID: 1357797832}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -880,7 +882,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1471301407}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.992, y: -0.13, z: 0.01491845}
+  m_LocalPosition: {x: -0.992, y: -0.14, z: 0.01491845}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1311,7 +1313,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1982748627}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.1242298, y: 0.32, z: 0.00073048635}
+  m_LocalPosition: {x: -1.1242298, y: 0.14, z: 0.00073048635}
   m_LocalScale: {x: 2.818881, y: 0.5233, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

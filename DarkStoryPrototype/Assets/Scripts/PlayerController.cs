@@ -53,6 +53,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 slamAttackSize;
     [SerializeField] private Transform fallAttackPos;
     [SerializeField] private Vector2 fallAttackSize;
+    [SerializeField] private Transform pogoPoint;
+    [SerializeField] private GameObject pogoSlashEffect;
+    private GameObject activePogoSlashEffect;
     private float comboTimeAuthorized = 0.3f;
     private float comboTimer = -1f;
     private int comboState = 0;
@@ -64,6 +67,7 @@ public class PlayerController : MonoBehaviour
     private float slowOnAttackTime = 0.1f;
     private float slowOnAttackTimer;
     private bool launchedAttack = false;
+    private bool attackingDown = false;
 
     // Components reference
     private Rigidbody2D rb;
@@ -76,7 +80,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        Time.timeScale = 0.5f;
+        //Time.timeScale = 0.25f; // localScale also affects the IEnumerators
 
         if(instance == null)
         {
@@ -114,21 +118,10 @@ public class PlayerController : MonoBehaviour
         }
         Checks();
 
-        if (launchedAttack && isGrounded)      // Slow the character whenever he attacks
+        if(activePogoSlashEffect != null)
         {
-            moveSpeed = 1.5f;
-            slowOnAttackTimer = slowOnAttackTime;
-        }
-        else
-        {
-            if (slowOnAttackTimer <= 0 || !isGrounded)
-            {
-                moveSpeed = 4f;
-                slowOnAttackTimer = 0;
-                launchedAttack = false;
-            }
-            else
-                slowOnAttackTimer -= Time.deltaTime;
+            activePogoSlashEffect.transform.position = pogoPoint.position;
+            activePogoSlashEffect.transform.localScale = transform.localScale;
         }
 
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -30, 30));    // Limit the max Y speed
@@ -194,15 +187,15 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = new Vector2(0f, rb.velocity.y);
         }
 
-        if(rb.velocity.x < -0.1f && !isAttacking && !isInPogo)
+        if(rb.velocity.x < -0.1f && !isAttacking && !isInPogo && !attackingDown)
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
-        else if(rb.velocity.x > 0.1f && !isAttacking && !isInPogo)
+        else if(rb.velocity.x > 0.1f && !isAttacking && !isInPogo && !attackingDown)
         {
             transform.localScale = new Vector3(1, 1, 1);
         }
-        else if (isInPogo)
+        else if (isInPogo || attackingDown)
         {
             if(inputDirection.x < -0.5f)
                 transform.localScale = new Vector3(-1, 1, 1);
@@ -264,19 +257,35 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAttacking()
     {
-        bool attackAvailable = !isAttacking && !inAttackCooldown;
+        if (launchedAttack && isGrounded)      // Slow the character whenever he attacks
+        {
+            moveSpeed = 1.5f;
+            slowOnAttackTimer = slowOnAttackTime;
+        }
+        else
+        {
+            if (slowOnAttackTimer <= 0 || !isGrounded)
+            {
+                moveSpeed = 4f;
+                slowOnAttackTimer = 0;
+                launchedAttack = false;
+            }
+            else
+                slowOnAttackTimer -= Time.deltaTime;
+        }
 
-        if(comboTimer > -1f)
+        if (comboTimer > -1f)
         {
             comboTimer -= Time.deltaTime;
         }
-
         if(!isAttacking && comboTimer <= 0)
         {
             comboState = 0;
         }
 
-        if(attackAvailable && controls.Player.Attack.WasPressedThisFrame())
+        bool attackAvailable = !isAttacking && !inAttackCooldown;
+
+        if (attackAvailable && controls.Player.Attack.WasPressedThisFrame())
         {
             if (isGrounded)
             {
@@ -329,7 +338,7 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("Slash2");
         if (combo)
-            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.18f / 0.6f, 0, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.19f / 0.6f, 0, true, comboTimeAuthorized));
         else
             StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.18f / 0.6f, 0.1f));
     }
@@ -352,7 +361,16 @@ public class PlayerController : MonoBehaviour
     private void FallAttack()
     {
         anim.SetTrigger("FallAttack");
-        StartCoroutine(PerformAttack(fallAttackPos, fallAttackSize, 0.2f / 0.6f, 0f));
+
+        if(pogoSlashEffect != null) 
+        {
+            activePogoSlashEffect = Instantiate(pogoSlashEffect, pogoPoint.position, pogoPoint.rotation);
+            activePogoSlashEffect.GetComponentInChildren<Animator>().SetTrigger("Appear");
+            Destroy(activePogoSlashEffect, 0.15f/0.6f);
+        }
+
+        attackingDown = true;
+        StartCoroutine(PerformAttack(fallAttackPos, fallAttackSize, 0.20f / 0.6f, 0f));
     }
     private IEnumerator PerformAttack(Transform attackCollisionPosition, Vector2 attackCollisionSize, float attackDuration, float attackCooldown, bool shouldTriggerCombo = false, float comboTime = 0f)
     {
@@ -371,6 +389,7 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(attackDuration);
         isAttacking = false;
+        attackingDown = false;
         inAttackCooldown = true;
         launchedAttack = false;
 
