@@ -69,7 +69,19 @@ public class PlayerController : MonoBehaviour
     private bool launchedAttack = false;
     private bool attackingDown = false;
 
-    // Components reference
+    [Header("LedgeInteraction")]
+    [SerializeField] private Transform ledgeDetectionIn;
+    [SerializeField] private Transform ledgeDetectionOut;
+    [SerializeField] private LayerMask ledgeLayers;
+    [SerializeField] private Transform ledgeClimbingPoint;
+    private bool isOnLedge;
+    private bool isLedgeClimbing;
+    private float ledgeGrabCooldownTime = 0.2f;
+    private float ledgeGrabCooldownTimer;
+
+    [Header("ComponentsReference")]
+    [SerializeField] private GameObject defaultSprite;
+    [SerializeField] private GameObject ledgeSprite;
     private Rigidbody2D rb;
     private Animator anim;
 
@@ -106,11 +118,15 @@ public class PlayerController : MonoBehaviour
     {
         if (canMove)
         {
-            MoveHorizontaly();
-            Jump();
-            Dash();
-            HandleAttacking();
-            Pogo();
+            if (!isLedgeClimbing)
+            {
+                MoveHorizontaly();
+                Jump();
+                Dash();
+                HandleAttacking();
+                Pogo();
+                HandleLedgeInteraction();
+            }
         }
         else
         {
@@ -124,7 +140,7 @@ public class PlayerController : MonoBehaviour
             activePogoSlashEffect.transform.localScale = transform.localScale;
         }
 
-        rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -30, 30));    // Limit the max Y speed
+        rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -20, 20));    // Limit the max Y speed
 
         anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         anim.SetBool("Grounded", isGrounded);
@@ -150,7 +166,7 @@ public class PlayerController : MonoBehaviour
     private void Checks()
     {
         isGrounded = Physics2D.OverlapCircle(groundPos.position, 0.15f, groundMask);
-        isFalling = rb.velocity.y < -0.1f;
+        isFalling = rb.velocity.y < 0;
 
         if (isGrounded)
         {
@@ -229,7 +245,7 @@ public class PlayerController : MonoBehaviour
 
     private void Dash()
     {
-        bool dashCondition = !isDashing && !inDashCooldown;
+        bool dashCondition = !isDashing && !inDashCooldown && !isAttacking && !isOnLedge;
 
         if (controls.Player.Dash.WasPressedThisFrame() && canDash && dashCondition)
         {
@@ -283,7 +299,7 @@ public class PlayerController : MonoBehaviour
             comboState = 0;
         }
 
-        bool attackAvailable = !isAttacking && !inAttackCooldown;
+        bool attackAvailable = !isAttacking && !inAttackCooldown && !isDashing && !isOnLedge;
 
         if (attackAvailable && controls.Player.Attack.WasPressedThisFrame())
         {
@@ -415,6 +431,69 @@ public class PlayerController : MonoBehaviour
         canDash = true;
         yield return new WaitForSeconds(pogoDuration);
         isInPogo = false;
+    }
+
+    private void HandleLedgeInteraction()
+    {
+        if(ledgeGrabCooldownTimer >= 0)
+            ledgeGrabCooldownTimer -= Time.deltaTime;
+
+        bool ledgeInCollision = Physics2D.OverlapBox(ledgeDetectionIn.position, new Vector2(0.08f, 0.05f), 0, ledgeLayers);
+        bool ledgeOutNotCollision = !Physics2D.OverlapBox(ledgeDetectionOut.position, new Vector2(0.08f, 0.05f), 0, ledgeLayers);
+
+        if (ledgeGrabCooldownTimer < 0 && ledgeInCollision && ledgeOutNotCollision && (isFalling || isOnLedge))
+        {
+            isOnLedge = true;
+        }
+        else
+        {
+            isOnLedge = false;
+        }
+
+        if (isOnLedge)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0f);
+            rb.gravityScale = 0f;
+            ledgeSprite.SetActive(true);
+            defaultSprite.SetActive(false);
+        }
+        else
+        {
+            if (!isDashing && !isLedgeClimbing)
+                rb.gravityScale = 5f;
+
+            ledgeSprite.SetActive(false);
+            defaultSprite.SetActive(true);
+        }
+
+        if (isOnLedge && inputDirection.y >= 0.2f)
+        {
+            StartCoroutine(LedgeClimb());
+        }
+        else if (inputDirection.y <= -0.9f)
+        {
+            isOnLedge = false;
+            ledgeGrabCooldownTimer = ledgeGrabCooldownTime;
+        }
+
+        anim = GetComponentInChildren<Animator>();
+        anim.SetBool("OnLedge", isOnLedge);
+    }
+
+    private IEnumerator LedgeClimb()
+    {
+        ledgeSprite.SetActive(true);
+        defaultSprite.SetActive(false);
+        isLedgeClimbing = true;
+        anim = GetComponentInChildren<Animator>();
+        anim.SetTrigger("LedgeClimb");
+
+        yield return new WaitForSeconds(0.5f);
+
+        ledgeSprite.SetActive(false);
+        defaultSprite.SetActive(true);
+        isLedgeClimbing = false;
+        transform.position = ledgeClimbingPoint.position;
     }
 
     #endregion
