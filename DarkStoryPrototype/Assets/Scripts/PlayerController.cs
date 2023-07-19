@@ -165,8 +165,8 @@ public class PlayerController : MonoBehaviour
 
     private void Checks()
     {
-        isGrounded = Physics2D.OverlapCircle(groundPos.position, 0.15f, groundMask);
-        isFalling = rb.velocity.y < 0;
+        isGrounded = Physics2D.OverlapBox(groundPos.position, new Vector2(0.43f, 0.25f), 0f, groundMask);
+        isFalling = rb.velocity.y < 0 && !isGrounded;
 
         if (isGrounded)
         {
@@ -438,8 +438,8 @@ public class PlayerController : MonoBehaviour
         if(ledgeGrabCooldownTimer >= 0)
             ledgeGrabCooldownTimer -= Time.deltaTime;
 
-        bool ledgeInCollision = Physics2D.OverlapBox(ledgeDetectionIn.position, new Vector2(0.08f, 0.05f), 0, ledgeLayers);
-        bool ledgeOutNotCollision = !Physics2D.OverlapBox(ledgeDetectionOut.position, new Vector2(0.08f, 0.05f), 0, ledgeLayers);
+        bool ledgeInCollision = Physics2D.OverlapBox(ledgeDetectionIn.position, new Vector2(0.08f, 0.3f), 0, ledgeLayers);
+        bool ledgeOutNotCollision = !Physics2D.OverlapBox(ledgeDetectionOut.position, new Vector2(0.08f, 0.2f), 0, ledgeLayers);
 
         if (ledgeGrabCooldownTimer < 0 && ledgeInCollision && ledgeOutNotCollision && (isFalling || isOnLedge))
         {
