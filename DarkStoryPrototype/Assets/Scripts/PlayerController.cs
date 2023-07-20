@@ -79,6 +79,13 @@ public class PlayerController : MonoBehaviour
     private float ledgeGrabCooldownTime = 0.2f;
     private float ledgeGrabCooldownTimer;
 
+    [Header("WallInteraction")]
+    [SerializeField] private Transform wallCheckFront;
+    [SerializeField] private LayerMask wallLayer;
+    private bool isWalled;
+    private float wallJumpDelayTime = 0.2f;
+    private float wallJumpDelayTimer;
+
     [Header("ComponentsReference")]
     [SerializeField] private GameObject defaultSprite;
     [SerializeField] private GameObject ledgeSprite;
@@ -126,6 +133,7 @@ public class PlayerController : MonoBehaviour
                 HandleAttacking();
                 Pogo();
                 HandleLedgeInteraction();
+                HandleWallInteraction();
             }
         }
         else
@@ -165,7 +173,7 @@ public class PlayerController : MonoBehaviour
 
     private void Checks()
     {
-        isGrounded = Physics2D.OverlapBox(groundPos.position, new Vector2(0.43f, 0.25f), 0f, groundMask);
+        isGrounded = Physics2D.OverlapBox(groundPos.position, new Vector2(0.4f, 0.25f), 0f, groundMask);
         isFalling = rb.velocity.y < 0 && !isGrounded;
 
         if (isGrounded)
@@ -466,7 +474,7 @@ public class PlayerController : MonoBehaviour
             defaultSprite.SetActive(true);
         }
 
-        if (isOnLedge && inputDirection.y >= 0.2f)
+        if (isOnLedge && (inputDirection.y >= 0.2f || controls.Player.Jump.WasPressedThisFrame()))
         {
             StartCoroutine(LedgeClimb());
         }
@@ -494,6 +502,11 @@ public class PlayerController : MonoBehaviour
         defaultSprite.SetActive(true);
         isLedgeClimbing = false;
         transform.position = ledgeClimbingPoint.position;
+    }
+
+    private void HandleWallInteraction()
+    {
+
     }
 
     #endregion
