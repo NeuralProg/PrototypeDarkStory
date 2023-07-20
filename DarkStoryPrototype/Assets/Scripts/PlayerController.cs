@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using Unity.Burst.Intrinsics;
 using UnityEditor.U2D.Path.GUIFramework;
 using UnityEngine;
@@ -81,10 +82,15 @@ public class PlayerController : MonoBehaviour
 
     [Header("WallInteraction")]
     [SerializeField] private Transform wallCheckFront;
+    [SerializeField] private Transform wallCheckBack;
     [SerializeField] private LayerMask wallLayer;
     private bool isWalled;
+    private bool hasWallBehind;
+    private bool wallJumping;
     private float wallJumpDelayTime = 0.2f;
     private float wallJumpDelayTimer;
+    private float wallJumpDuration = 0.1f;
+    private float wallJumpForce = 7f;
 
     [Header("ComponentsReference")]
     [SerializeField] private GameObject defaultSprite;
@@ -153,7 +159,8 @@ public class PlayerController : MonoBehaviour
         anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         anim.SetBool("Grounded", isGrounded);
         anim.SetBool("Falling", isFalling);
-        anim.SetBool("Jumping", isJumping);
+        anim.SetBool("WallSliding", isWalled);
+        anim.SetBool("Jumping", (isJumping || wallJumping));
     }
 
     private void OnEnable()
@@ -203,7 +210,7 @@ public class PlayerController : MonoBehaviour
 
     private void MoveHorizontaly()
     {
-        if (!isDashing)
+        if (!isDashing && !wallJumping)
         {
             if(inputDirection.x != 0f)
                 rb.velocity = new Vector2((inputDirection.x / Mathf.Abs(inputDirection.x)) * moveSpeed, rb.velocity.y);
@@ -235,12 +242,6 @@ public class PlayerController : MonoBehaviour
         if (isFalling && rb.velocity.y < -27f)
             shouldPlayLandEffect = true;
 
-        if (canJump && controls.Player.Jump.WasPressedThisFrame())
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
-            isJumping = true;
-        }
-
         if (isFalling)
             isJumping = false;
 
@@ -249,11 +250,33 @@ public class PlayerController : MonoBehaviour
             isJumping = false;
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y / 3f);
         }
+        if (wallJumping && controls.Player.Jump.WasReleasedThisFrame()) 
+        {
+            rb.velocity = new Vector2(rb.velocity.x / 3, rb.velocity.y / 3f);
+            wallJumping = false;    
+        }
+
+        if (controls.Player.Jump.WasPressedThisFrame() && !wallJumping && isWalled)
+        {
+            StartCoroutine(WallJump(true));
+        }
+        else if(controls.Player.Jump.WasPressedThisFrame() && !wallJumping && hasWallBehind && wallJumpDelayTimer > 0)
+        {
+            StartCoroutine(WallJump(false));
+        }
+        else 
+        {
+            if (canJump && controls.Player.Jump.WasPressedThisFrame())
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
+                isJumping = true;
+            }
+        }
     }
 
     private void Dash()
     {
-        bool dashCondition = !isDashing && !inDashCooldown && !isAttacking && !isOnLedge;
+        bool dashCondition = !isDashing && !inDashCooldown && !isAttacking && !isOnLedge && !isWalled;
 
         if (controls.Player.Dash.WasPressedThisFrame() && canDash && dashCondition)
         {
@@ -307,7 +330,7 @@ public class PlayerController : MonoBehaviour
             comboState = 0;
         }
 
-        bool attackAvailable = !isAttacking && !inAttackCooldown && !isDashing && !isOnLedge;
+        bool attackAvailable = !isAttacking && !inAttackCooldown && !isDashing && !isOnLedge && !isWalled;
 
         if (attackAvailable && controls.Player.Attack.WasPressedThisFrame())
         {
@@ -506,7 +529,36 @@ public class PlayerController : MonoBehaviour
 
     private void HandleWallInteraction()
     {
+        bool isGoingToWall = (transform.localScale.x < 0 && inputDirection.x < 0.2f) || (transform.localScale.x > 0 && inputDirection.x > 0.2f);
+        isWalled = Physics2D.OverlapBox(wallCheckFront.position, new Vector2(0.25f, 0.5f), 0, wallLayer) && !isGrounded && (isGoingToWall || isWalled) && !isOnLedge && !isLedgeClimbing;
+        hasWallBehind = Physics2D.OverlapBox(wallCheckBack.position, new Vector2(0.5f, 0.5f), 0, wallLayer) && !isGrounded;
 
+        if (wallJumpDelayTimer >= 0)
+            wallJumpDelayTimer -= Time.deltaTime;
+
+        if (isWalled)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -2, 20));
+            wallJumpDelayTimer = wallJumpDelayTime;
+            canDash = true;
+            shouldPlayLandEffect = false;
+        }
+
+        if(wallJumping)
+        {
+            rb.velocity = new Vector2(wallJumpForce * transform.localScale.x, wallJumpForce);
+        }
+    }
+    private IEnumerator WallJump(bool shouldFlip = false)
+    {
+        wallJumping = true;
+
+        if (shouldFlip)
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+
+        yield return new WaitForSeconds(wallJumpDuration);
+
+        wallJumping = false;
     }
 
     #endregion
