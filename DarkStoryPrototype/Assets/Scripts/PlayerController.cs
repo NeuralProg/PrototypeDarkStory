@@ -529,7 +529,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleWallInteraction()
     {
-        bool isGoingToWall = (transform.localScale.x < 0 && inputDirection.x < 0.2f) || (transform.localScale.x > 0 && inputDirection.x > 0.2f);
+        bool isGoingToWall = (transform.localScale.x < 0 && inputDirection.x < -0.2f) || (transform.localScale.x > 0 && inputDirection.x > 0.2f);
         isWalled = Physics2D.OverlapBox(wallCheckFront.position, new Vector2(0.25f, 0.5f), 0, wallLayer) && !isGrounded && (isGoingToWall || isWalled) && !isOnLedge && !isLedgeClimbing;
         hasWallBehind = Physics2D.OverlapBox(wallCheckBack.position, new Vector2(0.5f, 0.5f), 0, wallLayer) && !isGrounded;
 
