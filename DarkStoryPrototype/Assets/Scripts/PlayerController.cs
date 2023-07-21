@@ -71,7 +71,9 @@ public class PlayerController : MonoBehaviour
     private bool attackingDown = false;
 
     [Header("LedgeInteraction")]
-    [SerializeField] private Transform ledgeDetectionIn;
+    [SerializeField] private Transform ledgeDetectionInTop;
+    [SerializeField] private Transform ledgeDetectionInBot;
+    [SerializeField] private Vector3 ledgeClimbErrorOffset;
     [SerializeField] private Transform ledgeDetectionOut;
     [SerializeField] private LayerMask ledgeLayers;
     [SerializeField] private Transform ledgeClimbingPoint;
@@ -92,9 +94,16 @@ public class PlayerController : MonoBehaviour
     private float wallJumpDuration = 0.1f;
     private float wallJumpForce = 7f;
 
+    // Parry
+    private bool isParrying = false;
+    private float parryDuration = 0.15f / 0.6f;
+    private float parryCooldown = 0.5f;
+    private bool inParryCooldown = false;
+
     [Header("ComponentsReference")]
     [SerializeField] private GameObject defaultSprite;
     [SerializeField] private GameObject ledgeSprite;
+    private Vector3 defaultLedgeSpritePosition;
     private Rigidbody2D rb;
     private Animator anim;
 
@@ -125,6 +134,8 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
+
+        defaultLedgeSpritePosition = ledgeSprite.transform.localPosition;
     }
 
     void Update()
@@ -138,9 +149,10 @@ public class PlayerController : MonoBehaviour
                 Dash();
                 HandleAttacking();
                 Pogo();
-                HandleLedgeInteraction();
                 HandleWallInteraction();
+                HandleParry();
             }
+            HandleLedgeInteraction();
         }
         else
         {
@@ -155,6 +167,7 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -20, 20));    // Limit the max Y speed
+        anim = GetComponentInChildren<Animator>();
 
         anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         anim.SetBool("Grounded", isGrounded);
@@ -210,7 +223,7 @@ public class PlayerController : MonoBehaviour
 
     private void MoveHorizontaly()
     {
-        if (!isDashing && !wallJumping)
+        if (!isDashing && !wallJumping && !isParrying)
         {
             if(inputDirection.x != 0f)
                 rb.velocity = new Vector2((inputDirection.x / Mathf.Abs(inputDirection.x)) * moveSpeed, rb.velocity.y);
@@ -237,7 +250,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        bool canJump = (jumpCoyoteTimer >= 0) && !isJumping;
+        bool canJump = (jumpCoyoteTimer >= 0) && !isJumping && !isParrying;
 
         if (isFalling && rb.velocity.y < -27f)
             shouldPlayLandEffect = true;
@@ -276,7 +289,7 @@ public class PlayerController : MonoBehaviour
 
     private void Dash()
     {
-        bool dashCondition = !isDashing && !inDashCooldown && !isAttacking && !isOnLedge && !isWalled;
+        bool dashCondition = !isDashing && !inDashCooldown && !isAttacking && !isOnLedge && !isWalled && !isParrying;
 
         if (controls.Player.Dash.WasPressedThisFrame() && canDash && dashCondition)
         {
@@ -330,7 +343,7 @@ public class PlayerController : MonoBehaviour
             comboState = 0;
         }
 
-        bool attackAvailable = !isAttacking && !inAttackCooldown && !isDashing && !isOnLedge && !isWalled;
+        bool attackAvailable = !isAttacking && !inAttackCooldown && !isDashing && !isOnLedge && !isWalled && !isParrying;
 
         if (attackAvailable && controls.Player.Attack.WasPressedThisFrame())
         {
@@ -469,8 +482,17 @@ public class PlayerController : MonoBehaviour
         if(ledgeGrabCooldownTimer >= 0)
             ledgeGrabCooldownTimer -= Time.deltaTime;
 
-        bool ledgeInCollision = Physics2D.OverlapBox(ledgeDetectionIn.position, new Vector2(0.08f, 0.3f), 0, ledgeLayers);
+        bool ledgeInCollision = Physics2D.OverlapBox(ledgeDetectionInBot.position, new Vector2(0.08f, 0.15f), 0, ledgeLayers) || Physics2D.OverlapBox(ledgeDetectionInTop.position, new Vector2(0.08f, 0.15f), 0, ledgeLayers);
         bool ledgeOutNotCollision = !Physics2D.OverlapBox(ledgeDetectionOut.position, new Vector2(0.08f, 0.2f), 0, ledgeLayers);
+
+        if(Physics2D.OverlapBox(ledgeDetectionInBot.position, new Vector2(0.08f, 0.15f), 0, ledgeLayers) && Physics2D.OverlapBox(ledgeDetectionInTop.position, new Vector2(0.08f, 0.15f), 0, ledgeLayers))
+        {
+            ledgeSprite.transform.localPosition = defaultLedgeSpritePosition + ledgeClimbErrorOffset;
+        }
+        if(!isOnLedge && !isLedgeClimbing)
+        {
+            ledgeSprite.transform.localPosition = defaultLedgeSpritePosition;
+        }
 
         if (ledgeGrabCooldownTimer < 0 && ledgeInCollision && ledgeOutNotCollision && (isFalling || isOnLedge))
         {
@@ -497,7 +519,7 @@ public class PlayerController : MonoBehaviour
             defaultSprite.SetActive(true);
         }
 
-        if (isOnLedge && (inputDirection.y >= 0.2f || controls.Player.Jump.WasPressedThisFrame()))
+        if (isOnLedge && !isLedgeClimbing && (inputDirection.y >= 0.2f || controls.Player.Jump.WasPressedThisFrame()))
         {
             StartCoroutine(LedgeClimb());
         }
@@ -507,7 +529,6 @@ public class PlayerController : MonoBehaviour
             ledgeGrabCooldownTimer = ledgeGrabCooldownTime;
         }
 
-        anim = GetComponentInChildren<Animator>();
         anim.SetBool("OnLedge", isOnLedge);
     }
 
@@ -559,6 +580,55 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(wallJumpDuration);
 
         wallJumping = false;
+    }
+
+    private void HandleParry()
+    {
+        bool canParry = !isParrying && !inParryCooldown && !isWalled && !isOnLedge && !isDashing && !isAttacking && !wallJumping && controls.Player.Parry.WasPressedThisFrame();
+
+        if (canParry)
+        {
+            StartCoroutine(ParryTimer());
+        }
+    }
+    private IEnumerator ParryTimer()
+    {
+        anim.SetTrigger("Parry");
+        isParrying = true;
+        inParryCooldown = false;
+
+        yield return new WaitForSeconds(parryDuration);
+
+        isParrying = false;
+        inParryCooldown = true;
+        StartCoroutine(SucessfullParry());
+
+        yield return new WaitForSeconds(parryCooldown);
+
+        inParryCooldown = false;
+    }
+    private IEnumerator SucessfullParry()
+    {
+        anim.SetTrigger("SuccessfullParry");
+        isParrying = true;
+        inParryCooldown = false;
+        rb.velocity = Vector2.zero;
+        Time.timeScale = 0.5f;
+
+        yield return new WaitForSeconds((0.15f / 0.6f) / 2);
+
+        Time.timeScale = 1f;
+
+        yield return new WaitForSeconds(0.22f / 0.6f);
+
+        SpinAttack(false);
+
+        isParrying = false;
+        inParryCooldown = true;
+
+        yield return new WaitForSeconds(parryCooldown);
+
+        inParryCooldown = false;
     }
 
     #endregion
