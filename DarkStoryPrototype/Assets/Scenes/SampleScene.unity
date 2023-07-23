@@ -209,6 +209,9 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 7168
+  topRaycastLength: 0.8
+  edgeRaycast0ffset: {x: 0.22, y: 0, z: 0}
+  innerRaycastOffset: {x: 0.1, y: 0, z: 0}
   attackables:
     serializedVersion: 2
     m_Bits: 384

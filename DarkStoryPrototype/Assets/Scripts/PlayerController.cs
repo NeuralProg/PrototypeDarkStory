@@ -34,6 +34,12 @@ public class PlayerController : MonoBehaviour
     private float jumpCoyoteTimer;
     private bool shouldPlayLandEffect = false;
 
+    [Header("CornerCorrection")]
+    [SerializeField] private float topRaycastLength;
+    [SerializeField] private Vector3 edgeRaycast0ffset;
+    [SerializeField] private Vector3 innerRaycastOffset;
+    private bool canCornerCorrect;
+
     // Dash
     private float dashDuration = 0.2f;
     private float dashSpeedMultiplier = 3f;
@@ -176,6 +182,17 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("Jumping", (isJumping || wallJumping));
     }
 
+    private void FixedUpdate()
+    {
+        if (canCornerCorrect)
+            CornerCorrect(rb.velocity.y);
+
+        canCornerCorrect = (Physics2D.Raycast(transform.position + edgeRaycast0ffset, Vector2.up, topRaycastLength, groundMask) &&
+                           !Physics2D.Raycast(transform.position + innerRaycastOffset, Vector2.up, topRaycastLength, groundMask) ||
+                           Physics2D.Raycast(transform.position - edgeRaycast0ffset, Vector2.up, topRaycastLength, groundMask) &&
+                           !Physics2D.Raycast(transform.position - innerRaycastOffset, Vector2.up, topRaycastLength, groundMask)) && (isJumping || wallJumping);
+    }
+
     private void OnEnable()
     {
         controls.Enable();
@@ -285,6 +302,38 @@ public class PlayerController : MonoBehaviour
                 isJumping = true;
             }
         }
+    }
+    private void CornerCorrect(float yVelocity)
+    {
+        // Push to the right
+        RaycastHit2D hit = Physics2D.Raycast(transform.position - innerRaycastOffset + Vector3.up * topRaycastLength, Vector3.left, topRaycastLength *2, groundMask);
+        if(hit.collider != null)
+        {
+            float newPos = Vector3.Distance(new Vector3(hit.point.x, transform.position.y, 0f) + Vector3.up * topRaycastLength, transform.position - edgeRaycast0ffset + Vector3.up * topRaycastLength);
+            transform.position = new Vector3(transform.position.x + newPos, transform.position.y, transform.position.z);
+            rb.velocity = new Vector2(rb.velocity.x, yVelocity);
+            return;
+        }
+
+        // Push to the left
+        hit = Physics2D.Raycast(transform.position + innerRaycastOffset + Vector3.up * topRaycastLength, Vector3.right, topRaycastLength * 2, groundMask);
+        if (hit.collider != null) 2
+        {
+            float newPos = Vector3.Distance(new Vector3(hit.point.x, transform.position.y, 0f) + Vector3.up * topRaycastLength, transform.position + edgeRaycast0ffset + Vector3.up * topRaycastLength);
+            transform.position = new Vector3(transform.position.x - newPos, transform.position.y, transform.position.z);
+            rb.velocity = new Vector2(rb.velocity.x, yVelocity);
+            return;
+        }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(transform.position + edgeRaycast0ffset, transform.position + edgeRaycast0ffset + Vector3.up * topRaycastLength);
+        Gizmos.DrawLine(transform.position - edgeRaycast0ffset, transform.position - edgeRaycast0ffset + Vector3.up * topRaycastLength);
+        Gizmos.DrawLine(transform.position + innerRaycastOffset, transform.position + innerRaycastOffset + Vector3.up * topRaycastLength);
+        Gizmos.DrawLine(transform.position - innerRaycastOffset, transform.position - innerRaycastOffset + Vector3.up * topRaycastLength);
+
+        Gizmos.DrawLine(transform.position - innerRaycastOffset + Vector3.up * topRaycastLength, transform.position - innerRaycastOffset + Vector3.up * topRaycastLength + Vector3.left * topRaycastLength * 2);
+        Gizmos.DrawLine(transform.position + innerRaycastOffset + Vector3.up * topRaycastLength, transform.position + innerRaycastOffset + Vector3.up * topRaycastLength + Vector3.right * topRaycastLength * 2);
     }
 
     private void Dash()
