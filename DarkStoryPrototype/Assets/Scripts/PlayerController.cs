@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
     private float jumpCoyoteTime = 0.1f;
     private float jumpCoyoteTimer;
     private bool shouldPlayLandEffect = false;
+    private float jumpBufferingTime = 0.05f;
+    private float jumpBufferingTimer;
 
     [Header("CornerCorrection")]
     [SerializeField] private float topRaycastLength;
@@ -74,7 +76,6 @@ public class PlayerController : MonoBehaviour
     private float slowOnAttackTime = 0.1f;
     private float slowOnAttackTimer;
     private bool launchedAttack = false;
-    private bool attackingDown = false;
 
     [Header("LedgeInteraction")]
     [SerializeField] private Transform ledgeDetectionInTop;
@@ -248,20 +249,13 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = new Vector2(0f, rb.velocity.y);
         }
 
-        if(rb.velocity.x < -0.1f && !isAttacking && !isInPogo && !attackingDown)
+        if(rb.velocity.x < -0.1f && !isAttacking && !isInPogo)
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
-        else if(rb.velocity.x > 0.1f && !isAttacking && !isInPogo && !attackingDown)
+        else if(rb.velocity.x > 0.1f && !isAttacking && !isInPogo)
         {
             transform.localScale = new Vector3(1, 1, 1);
-        }
-        else if (isInPogo || attackingDown)
-        {
-            if(inputDirection.x < -0.5f)
-                transform.localScale = new Vector3(-1, 1, 1);
-            else if(inputDirection.x > 0.5f)
-                transform.localScale = new Vector3(1, 1, 1);
         }
     }
 
@@ -286,6 +280,15 @@ public class PlayerController : MonoBehaviour
             wallJumping = false;    
         }
 
+        if (controls.Player.Jump.WasPressedThisFrame() && isFalling)
+        {
+            jumpBufferingTimer = jumpBufferingTime;
+        }
+        if (jumpBufferingTimer >= 0)
+        {
+            jumpBufferingTimer -= Time.deltaTime;
+        }
+
         if (controls.Player.Jump.WasPressedThisFrame() && !wallJumping && isWalled)
         {
             StartCoroutine(WallJump(true));
@@ -296,8 +299,9 @@ public class PlayerController : MonoBehaviour
         }
         else 
         {
-            if (canJump && controls.Player.Jump.WasPressedThisFrame())
+            if (canJump && (controls.Player.Jump.WasPressedThisFrame() || jumpBufferingTimer > 0))
             {
+                jumpBufferingTimer = 0;
                 rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
                 isJumping = true;
             }
@@ -478,7 +482,6 @@ public class PlayerController : MonoBehaviour
             Destroy(activePogoSlashEffect, 0.15f/0.6f);
         }
 
-        attackingDown = true;
         StartCoroutine(PerformAttack(fallAttackPos, fallAttackSize, 0.20f / 0.6f, 0f));
     }
     private IEnumerator PerformAttack(Transform attackCollisionPosition, Vector2 attackCollisionSize, float attackDuration, float attackCooldown, bool shouldTriggerCombo = false, float comboTime = 0f)
@@ -498,7 +501,6 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(attackDuration);
         isAttacking = false;
-        attackingDown = false;
         inAttackCooldown = true;
         launchedAttack = false;
 
