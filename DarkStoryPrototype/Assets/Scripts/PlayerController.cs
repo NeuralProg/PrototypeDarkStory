@@ -368,7 +368,7 @@ public class PlayerController : MonoBehaviour
     {
         if (launchedAttack && isGrounded)      // Slow the character whenever he attacks
         {
-            moveSpeed = 1.5f;
+            moveSpeed = 1f;
             slowOnAttackTimer = slowOnAttackTime;
         }
         else
