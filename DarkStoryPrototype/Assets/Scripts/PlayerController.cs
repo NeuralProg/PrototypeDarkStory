@@ -574,7 +574,7 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(LedgeClimb());
         }
-        else if (inputDirection.y <= -0.9f)
+        else if (inputDirection.y <= -0.9f && isOnLedge && !isLedgeClimbing)
         {
             isOnLedge = false;
             ledgeGrabCooldownTimer = ledgeGrabCooldownTime;
