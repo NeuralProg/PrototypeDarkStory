@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
     // Dash
     private float dashDuration = 0.2f;
     private float dashSpeedMultiplier = 3f;
-    private float dashCooldown = 0.1f;
+    private float dashCooldown = 0.5f;
     private bool canDash;
     private bool inDashCooldown = false;
     private bool isDashing = false;
@@ -229,6 +229,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             jumpCoyoteTimer -= Time.deltaTime;
+            inDashCooldown = false;
         }
     }
 
