@@ -280,7 +280,7 @@ public class PlayerController : MonoBehaviour
             wallJumping = false;    
         }
 
-        if (controls.Player.Jump.WasPressedThisFrame() && isFalling)
+        if (controls.Player.Jump.WasPressedThisFrame() && isFalling && !isWalled)
         {
             jumpBufferingTimer = jumpBufferingTime;
         }
