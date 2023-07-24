@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        //Time.timeScale = 0.25f; // localScale also affects the IEnumerators
+        Time.timeScale = 1.5f; // localScale also affects the IEnumerators
 
         if(instance == null)
         {
