@@ -641,6 +641,11 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(ParryTimer());
         }
+
+        if((isOnLedge || isLedgeClimbing))
+        {
+            isParrying = false;
+        }
     }
     private IEnumerator ParryTimer()
     {
@@ -672,7 +677,8 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(0.22f / 0.6f);
 
-        SpinAttack(false);
+        if(!isOnLedge && !isLedgeClimbing)
+            SpinAttack(false);
 
         isParrying = false;
         inParryCooldown = true;
