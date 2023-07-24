@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform pogoPoint;
     [SerializeField] private GameObject pogoSlashEffect;
     private GameObject activePogoSlashEffect;
-    private float comboTimeAuthorized = 0.3f;
+    private float comboTimeAuthorized = 0.5f;
     private float comboTimer = -1f;
     private int comboState = 0;
     private bool isAttacking = false;
