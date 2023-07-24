@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
 
     // Dash
     private float dashDuration = 0.2f;
-    private float dashSpeedMultiplier = 3f;
+    private float dashSpeedMultiplier = 2f;
     private float dashCooldown = 0.5f;
     private bool canDash;
     private bool inDashCooldown = false;
@@ -618,7 +618,7 @@ public class PlayerController : MonoBehaviour
 
         if(wallJumping)
         {
-            rb.velocity = new Vector2(wallJumpForce * transform.localScale.x, wallJumpForce);
+            rb.velocity = new Vector2(wallJumpForce * transform.localScale.x, jumpHeight);
         }
     }
     private IEnumerator WallJump(bool shouldFlip = false)
