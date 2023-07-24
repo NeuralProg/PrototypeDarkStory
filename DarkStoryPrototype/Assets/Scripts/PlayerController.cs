@@ -465,7 +465,7 @@ public class PlayerController : MonoBehaviour
         if (combo)
             StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.27f / 0.6f, 0, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.27f / 0.6f, 0.5f));
+            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.27f / 0.6f, 0.3f));
     }
     private void FallAttack()
     {
