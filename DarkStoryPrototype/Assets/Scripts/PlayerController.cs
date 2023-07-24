@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
 
     // Dash
     private float dashDuration = 0.2f;
-    private float dashSpeedMultiplier = 2f;
+    private float dashSpeedMultiplier = 3f;
     private float dashCooldown = 0.5f;
     private bool canDash;
     private bool inDashCooldown = false;
@@ -273,11 +273,6 @@ public class PlayerController : MonoBehaviour
         {
             isJumping = false;
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y / 3f);
-        }
-        if (wallJumping && controls.Player.Jump.WasReleasedThisFrame()) 
-        {
-            rb.velocity = new Vector2(rb.velocity.x / 3, rb.velocity.y / 3f);
-            wallJumping = false;    
         }
 
         if (controls.Player.Jump.WasPressedThisFrame() && isFalling && !isWalled)
@@ -618,7 +613,7 @@ public class PlayerController : MonoBehaviour
 
         if(wallJumping)
         {
-            rb.velocity = new Vector2(wallJumpForce * transform.localScale.x, jumpHeight);
+            rb.velocity = new Vector2(wallJumpForce * transform.localScale.x, wallJumpForce * 1.5f);
         }
     }
     private IEnumerator WallJump(bool shouldFlip = false)
