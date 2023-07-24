@@ -612,7 +612,12 @@ public class PlayerController : MonoBehaviour
             shouldPlayLandEffect = false;
         }
 
-        if(wallJumping)
+        if(wallJumping && !controls.Player.Jump.IsPressed())
+        {
+            rb.velocity = new Vector2(wallJumpForce * transform.localScale.x, rb.velocity.y / 2);
+            wallJumping = false;
+        }
+        else if (wallJumping)
         {
             rb.velocity = new Vector2(wallJumpForce * transform.localScale.x, wallJumpForce * 1.5f);
         }
