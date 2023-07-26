@@ -11,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Player
   - Enemy
   - Destructible
   - 
@@ -19,10 +19,10 @@ TagManager:
   - Walls
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - NoColPlayer
+  - NoColEnemy
+  - NoColPlayerEnemy
+  - NoCol
   - 
   - 
   - 

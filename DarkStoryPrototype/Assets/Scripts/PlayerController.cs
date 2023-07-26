@@ -116,14 +116,15 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-
+   
     #region Basics
 
     private void Awake()
     {
         //Time.timeScale = 1f; // localScale also affects the IEnumerators
 
-        if(instance == null)
+        // Set the objet as an instance 
+        if (instance == null)        
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -133,23 +134,26 @@ public class PlayerController : MonoBehaviour
             Destroy(gameObject);
         }
 
-        controls = new InputManager();
+        // Setup controls
+        controls = new InputManager();      
         controls.Player.Direction.performed += ctx => inputDirection = ctx.ReadValue<Vector2>();
     }
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        // Define the reference to components
+        rb = GetComponent<Rigidbody2D>();       
         anim = GetComponentInChildren<Animator>();
 
-        defaultLedgeSpritePosition = ledgeSprite.transform.localPosition;
+        defaultLedgeSpritePosition = ledgeSprite.transform.localPosition;   // store the initial position of the ledgeSprite
     }
 
     void Update()
     {
+        // Handle mechanics
         if (canMove)
         {
-            if (!isLedgeClimbing)
+            if (!isLedgeClimbing)   
             {
                 MoveHorizontaly();
                 Jump();
@@ -163,20 +167,15 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            rb.velocity = Vector2.zero;
+            rb.velocity = Vector2.zero;     // Stop movement if cannot move
         }
-        Checks();
-
-        if(activePogoSlashEffect != null)
-        {
-            activePogoSlashEffect.transform.position = pogoPoint.position;
-            activePogoSlashEffect.transform.localScale = transform.localScale;
-        }
+        Checks();   // The important checks that have to be done every frame
 
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -20, 20));    // Limit the max Y speed
         anim = GetComponentInChildren<Animator>();
 
-        anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+        // Set the parameters of the animator
+        anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));   
         anim.SetBool("Grounded", isGrounded);
         anim.SetBool("Falling", isFalling);
         anim.SetBool("WallSliding", isWalled);
@@ -185,20 +184,19 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (canCornerCorrect)
-            CornerCorrect(rb.velocity.y);
-
+        // Handle corner correction
         canCornerCorrect = (Physics2D.Raycast(transform.position + edgeRaycast0ffset, Vector2.up, topRaycastLength, groundMask) &&
                            !Physics2D.Raycast(transform.position + innerRaycastOffset, Vector2.up, topRaycastLength, groundMask) ||
                            Physics2D.Raycast(transform.position - edgeRaycast0ffset, Vector2.up, topRaycastLength, groundMask) &&
                            !Physics2D.Raycast(transform.position - innerRaycastOffset, Vector2.up, topRaycastLength, groundMask)) && (isJumping || wallJumping);
+        if (canCornerCorrect)
+            CornerCorrect(rb.velocity.y);       
     }
 
     private void OnEnable()
     {
         controls.Enable();
     }
-
     private void OnDisable()
     {
         controls.Disable();
@@ -216,10 +214,12 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded)
         {
-            jumpCoyoteTimer = jumpCoyoteTime;
+            // Reset mechanics cooldown
+            jumpCoyoteTimer = jumpCoyoteTime;   
             canDash = true;
 
-            if (shouldPlayLandEffect)
+            // Create the land effect
+            if (shouldPlayLandEffect)       
             {
                 shouldPlayLandEffect = false;
                 anim.SetTrigger("LandAnim");
@@ -228,8 +228,15 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            jumpCoyoteTimer -= Time.deltaTime;
-            inDashCooldown = false;
+            jumpCoyoteTimer -= Time.deltaTime; 
+            inDashCooldown = false; // as whe only have one dash in air we don't need to have a cooldown 
+        }
+
+        // Set the pogo slash effect's position
+        if (activePogoSlashEffect != null)       
+        {
+            activePogoSlashEffect.transform.position = pogoPoint.position;
+            activePogoSlashEffect.transform.localScale = transform.localScale;
         }
     }
 
@@ -338,13 +345,14 @@ public class PlayerController : MonoBehaviour
 
     private void Dash()
     {
+        // Define if we can dash
         bool dashCondition = !isDashing && !inDashCooldown && !isAttacking && !isOnLedge && !isWalled && !isParrying;
-
         if (controls.Player.Dash.WasPressedThisFrame() && canDash && dashCondition)
         {
             StartCoroutine(DashCooldown());
         }
 
+        // Apply dash force
         if (isDashing)
         {
             rb.velocity = new Vector2(transform.localScale.x * moveSpeed * dashSpeedMultiplier, 0);
@@ -357,10 +365,14 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
         inDashCooldown = true;
         rb.gravityScale = 0f;
+
         yield return new WaitForSeconds(dashDuration);
+
         isDashing = false;
         rb.gravityScale = 5f;
+
         yield return new WaitForSeconds(dashCooldown);
+
         inDashCooldown = false;
     }
 
