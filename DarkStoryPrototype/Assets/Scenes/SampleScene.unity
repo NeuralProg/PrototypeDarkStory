@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 219279199}
   - component: {fileID: 219279201}
   - component: {fileID: 219279200}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -299,6 +299,7 @@ Transform:
   - {fileID: 481113991}
   - {fileID: 1106141448}
   - {fileID: 1357797832}
+  - {fileID: 1840226567}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -316,6 +317,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canMove: 1
   moveSpeed: 6
+  maxHealth: 5
+  currentHealth: 0
+  attackDamages: 1
   groundPos: {fileID: 2018374366}
   groundMask:
     serializedVersion: 2
@@ -351,6 +355,7 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 2048
+  centerPoint: {fileID: 1840226567}
   defaultSprite: {fileID: 481113990}
   ledgeSprite: {fileID: 1106141445}
 --- !u!50 &219279200
@@ -1583,7 +1588,7 @@ GameObject:
   - component: {fileID: 1370422476}
   - component: {fileID: 1370422478}
   - component: {fileID: 1370422477}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Attackable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1864,7 +1869,7 @@ GameObject:
   - component: {fileID: 1555303523}
   - component: {fileID: 1555303522}
   - component: {fileID: 1555303521}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ArcherEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1879,11 +1884,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1555303519}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.1, y: 1.47, z: 0.5444416}
+  m_LocalPosition: {x: 3.7, y: -2.98, z: 0.5444416}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 942884938}
+  - {fileID: 1796453923}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1899,7 +1905,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 50
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 5
@@ -1936,12 +1942,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9321f76cb8d9f4533af489f64a31aec4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 4
-  currentHealth: 0
+  maxHealth: 40
   damagesOnPlayerTouch: 1
   damagedParticles: {fileID: 0}
   deathParticles: {fileID: 0}
   deathAnimTime: 0.41666666
+  centerPoint: {fileID: 1796453923}
 --- !u!1 &1661083860
 GameObject:
   m_ObjectHideFlags: 0
@@ -2133,6 +2139,68 @@ Transform:
   - {fileID: 907600314}
   m_Father: {fileID: 0}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1796453922
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1796453923}
+  m_Layer: 7
+  m_Name: CenterPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1796453923
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796453922}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.36, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1555303520}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1840226566
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1840226567}
+  m_Layer: 6
+  m_Name: CenterPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1840226567
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840226566}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 219279198}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1848092080
 GameObject:

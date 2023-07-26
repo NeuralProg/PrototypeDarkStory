@@ -21,6 +21,24 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool canMove = true;
     [HideInInspector] public float moveSpeed = 4f;
 
+    // Health
+    [HideInInspector] public int maxHealth = 5;
+    public int currentHealth;
+    private float invincibilityTime = 1f;
+    private float invincibilityTimer;
+    private float invincibilityBlinkEffectTime = 0.1f;
+    private float invincibilityBlinkEffectTimer;
+
+    // Damages
+    [HideInInspector] public int attackDamages = 1;
+
+    // Knockback
+    private float knockbackForce = 3f;
+    private float knockbackAttackDuration = 0.1f;
+    private float knockbackAttackedDuration = 0.2f;
+    private bool isKnockbacking;
+    private Vector2 knockbackDirection;
+
     [Header("Checks")]
     [SerializeField] private Transform groundPos;
     [SerializeField] private LayerMask groundMask;
@@ -108,6 +126,7 @@ public class PlayerController : MonoBehaviour
     private bool inParryCooldown = false;
 
     [Header("ComponentsReference")]
+    public Transform centerPoint;
     [SerializeField] private GameObject defaultSprite;
     [SerializeField] private GameObject ledgeSprite;
     private Vector3 defaultLedgeSpritePosition;
@@ -145,6 +164,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();       
         anim = GetComponentInChildren<Animator>();
 
+        currentHealth = maxHealth;
         defaultLedgeSpritePosition = ledgeSprite.transform.localPosition;   // store the initial position of the ledgeSprite
     }
 
@@ -159,6 +179,7 @@ public class PlayerController : MonoBehaviour
                 Jump();
                 Dash();
                 HandleAttacking();
+                HandleKnockback();
                 Pogo();
                 HandleWallInteraction();
                 HandleParry();
@@ -170,6 +191,26 @@ public class PlayerController : MonoBehaviour
             rb.velocity = Vector2.zero;     // Stop movement if cannot move
         }
         Checks();   // The important checks that have to be done every frame
+
+        if(invincibilityTimer > 0)
+        {
+            invincibilityTimer -= Time.deltaTime;
+            invincibilityBlinkEffectTimer -= Time.deltaTime;
+
+            if (invincibilityBlinkEffectTimer <= 0)
+            {
+                GetComponentInChildren<SpriteRenderer>().enabled = !GetComponentInChildren<SpriteRenderer>().enabled;
+                invincibilityBlinkEffectTimer = invincibilityBlinkEffectTime;
+            }
+
+            if(invincibilityTimer <= 0)
+            {
+                GetComponentInChildren<SpriteRenderer>().enabled = true;
+
+                invincibilityTimer = 0f;
+                invincibilityBlinkEffectTimer = 0f;
+            }
+        }
 
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -20, 20));    // Limit the max Y speed
         anim = GetComponentInChildren<Animator>();
@@ -249,7 +290,7 @@ public class PlayerController : MonoBehaviour
 
     private void MoveHorizontaly()
     {
-        if (!isDashing && !wallJumping && !isParrying)
+        if (!isDashing && !wallJumping && !isParrying && !isKnockbacking)
         {
             if(inputDirection.x != 0f)
                 rb.velocity = new Vector2((inputDirection.x / Mathf.Abs(inputDirection.x)) * moveSpeed, rb.velocity.y);
@@ -257,11 +298,11 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = new Vector2(0f, rb.velocity.y);
         }
 
-        if(rb.velocity.x < -0.1f && !isAttacking && !isInPogo)
+        if(rb.velocity.x < -0.1f && !isAttacking && !isInPogo && !isKnockbacking)
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
-        else if(rb.velocity.x > 0.1f && !isAttacking && !isInPogo)
+        else if(rb.velocity.x > 0.1f && !isAttacking && !isInPogo && !isKnockbacking)
         {
             transform.localScale = new Vector3(1, 1, 1);
         }
@@ -269,7 +310,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        bool canJump = (jumpCoyoteTimer >= 0) && !isJumping && !isParrying;
+        bool canJump = (jumpCoyoteTimer >= 0) && !isJumping && !isParrying && !isKnockbacking;
 
         if (isFalling && rb.velocity.y < -27f)
             shouldPlayLandEffect = true;
@@ -346,9 +387,16 @@ public class PlayerController : MonoBehaviour
     private void Dash()
     {
         // Define if we can dash
-        bool dashCondition = !isDashing && !inDashCooldown && !isAttacking && !isOnLedge && !isWalled && !isParrying;
+        bool dashCondition = !isDashing && !inDashCooldown && !isOnLedge && !isWalled && !isParrying && !isKnockbacking && !isInPogo;
         if (controls.Player.Dash.WasPressedThisFrame() && canDash && dashCondition)
         {
+            if (isAttacking)
+            {
+                isAttacking = false;
+                inAttackCooldown = true;
+                launchedAttack = false;
+            }
+
             StartCoroutine(DashCooldown());
         }
 
@@ -404,7 +452,7 @@ public class PlayerController : MonoBehaviour
             comboState = 0;
         }
 
-        bool attackAvailable = !isAttacking && !inAttackCooldown && !isDashing && !isOnLedge && !isWalled && !isParrying;
+        bool attackAvailable = !isAttacking && !inAttackCooldown && !isDashing && !isOnLedge && !isWalled && !isParrying && !isKnockbacking;
 
         if (attackAvailable && controls.Player.Attack.WasPressedThisFrame())
         {
@@ -450,34 +498,34 @@ public class PlayerController : MonoBehaviour
     private void Slash1(bool combo = true)
     {
         anim.SetTrigger("Slash1");
-        if(combo)
-            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.25f / 0.6f, 0, true, comboTimeAuthorized));
+        if (combo)
+            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.25f / 0.6f, 0f, 0f, true, comboTimeAuthorized)); 
         else
-            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.25f / 0.6f, 0.1f));
+            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.25f / 0.6f, 0f, 0.1f));
     }
     private void Slash2(bool combo = true)
     {
         anim.SetTrigger("Slash2");
         if (combo)
-            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.19f / 0.6f, 0, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.19f / 0.6f, 0.05f / 0.6f, 0f, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.18f / 0.6f, 0.1f));
+            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.18f / 0.6f, 0.05f / 0.6f, 0.1f, false, 0f));
     }
     private void SpinAttack(bool combo = true)
     {
         anim.SetTrigger("SpinAttack");
         if (combo)
-            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.22f / 0.6f, 0.5f, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.22f / 0.6f, 0f, 0.5f, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.22f / 0.6f, 0.1f));
+            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.22f / 0.6f, 0f, 0.1f));
     }
     private void SlamAttack(bool combo = true)
     {
         anim.SetTrigger("SlamAttack");
         if (combo)
-            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.27f / 0.6f, 0, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.27f / 0.6f, 0.06f / 0.6f, 0, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.27f / 0.6f, 0.3f));
+            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.27f / 0.6f, 0.06f / 0.6f, 0.3f));
     }
     private void FallAttack()
     {
@@ -490,13 +538,15 @@ public class PlayerController : MonoBehaviour
             Destroy(activePogoSlashEffect, 0.15f/0.6f);
         }
 
-        StartCoroutine(PerformAttack(fallAttackPos, fallAttackSize, 0.20f / 0.6f, 0f));
+        StartCoroutine(PerformAttack(fallAttackPos, fallAttackSize, 0.20f / 0.6f, 0f, 0f, false, 0f));
     }
-    private IEnumerator PerformAttack(Transform attackCollisionPosition, Vector2 attackCollisionSize, float attackDuration, float attackCooldown, bool shouldTriggerCombo = false, float comboTime = 0f)
+    private IEnumerator PerformAttack(Transform attackCollisionPosition, Vector2 attackCollisionSize, float attackDuration, float attackDetectionDelay, float attackCooldown, bool shouldTriggerCombo = false, float comboTime = 0f)
     {
         launchedAttack = true;
         isAttacking = true;
         inAttackCooldown = false;
+
+        yield return new WaitForSeconds(attackDetectionDelay);
 
         var collisionDetected = Physics2D.OverlapBoxAll(attackCollisionPosition.position, attackCollisionSize, 0, attackables);
         foreach(Collider2D attackable in collisionDetected)
@@ -505,9 +555,23 @@ public class PlayerController : MonoBehaviour
             {
                 StartCoroutine(PogoTime());
             }
+            else
+            {
+                knockbackDirection = new Vector2(transform.position.x - attackable.gameObject.transform.position.x, transform.position.y - attackable.gameObject.transform.position.y).normalized;
+                StartCoroutine(KnockbackTime(false));
+            }
+
+            if (LayerMask.LayerToName(attackable.gameObject.layer) == "Enemy")
+            {
+                attackable.gameObject.GetComponent<Enemy>().TakeDamage(attackDamages);
+            }
+
+            /* 
+             * TO DO : Handle damage to destructible objects 
+             */
         }
 
-        yield return new WaitForSeconds(attackDuration);
+        yield return new WaitForSeconds(attackDuration - attackDetectionDelay);
         isAttacking = false;
         inAttackCooldown = true;
         launchedAttack = false;
@@ -571,7 +635,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (!isDashing && !isLedgeClimbing)
+            if (!isDashing && !isLedgeClimbing && !isKnockbacking)
                 rb.gravityScale = 5f;
 
             ledgeSprite.SetActive(false);
@@ -610,7 +674,7 @@ public class PlayerController : MonoBehaviour
     private void HandleWallInteraction()
     {
         bool isGoingToWall = (transform.localScale.x < 0 && inputDirection.x < -0.2f) || (transform.localScale.x > 0 && inputDirection.x > 0.2f);
-        isWalled = Physics2D.OverlapBox(wallCheckFront.position, new Vector2(0.25f, 0.5f), 0, wallLayer) && !isGrounded && (isGoingToWall || isWalled) && !isOnLedge && !isLedgeClimbing;
+        isWalled = Physics2D.OverlapBox(wallCheckFront.position, new Vector2(0.25f, 0.5f), 0, wallLayer) && !isGrounded && (isGoingToWall || isWalled) && !isOnLedge && !isLedgeClimbing && !isKnockbacking;
         hasWallBehind = Physics2D.OverlapBox(wallCheckBack.position, new Vector2(0.5f, 0.5f), 0, wallLayer) && !isGrounded;
 
         if (wallJumpDelayTimer >= 0)
@@ -648,13 +712,13 @@ public class PlayerController : MonoBehaviour
 
     private void HandleParry()
     {
-        bool canParry = !isParrying && !inParryCooldown && !isWalled && !isOnLedge && !isDashing && !isAttacking && !wallJumping && controls.Player.Parry.WasPressedThisFrame();
+        bool canParry = !isParrying && !inParryCooldown && !isKnockbacking && !isWalled && !isOnLedge && !isDashing && !isAttacking && !wallJumping && controls.Player.Parry.WasPressedThisFrame();
 
         if (canParry)
         {
             StartCoroutine(ParryTimer());
         }
-
+         
         if((isOnLedge || isLedgeClimbing))
         {
             isParrying = false;
@@ -699,6 +763,45 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(parryCooldown);
 
         inParryCooldown = false;
+    }
+
+    private void HandleKnockback()
+    {
+        if (isKnockbacking)
+        {
+            rb.velocity = knockbackDirection * knockbackForce;
+            print(knockbackDirection * knockbackForce);
+        }
+    }
+    private IEnumerator KnockbackTime(bool playerHit)
+    {
+        isKnockbacking = true;
+        rb.gravityScale = 0f;
+
+        if(playerHit)
+            yield return new WaitForSeconds(knockbackAttackedDuration);
+        else
+            yield return new WaitForSeconds(knockbackAttackDuration);
+
+        rb.gravityScale = 5f;
+        isKnockbacking = false;
+    }
+
+    public void TakeDamage(Vector3 attackerPos, int damageAmount)
+    {
+        if (invincibilityTimer <= 0)
+        {
+            // Knockback
+            knockbackDirection = new Vector2(centerPoint.position.x - attackerPos.x, centerPoint.position.y - attackerPos.y).normalized;
+            StartCoroutine(KnockbackTime(true));
+
+            currentHealth -= damageAmount;
+            anim.SetTrigger("Damage");
+
+            invincibilityTimer = invincibilityTime;
+
+            // Death here
+        }
     }
 
     #endregion
