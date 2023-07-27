@@ -387,9 +387,17 @@ public class PlayerController : MonoBehaviour
     private void Dash()
     {
         // Define if we can dash
-        bool dashCondition = !isDashing && !inDashCooldown && !isOnLedge && !isWalled && !isParrying && !isKnockbacking && !isInPogo;
+        bool dashCondition = !isDashing && !inDashCooldown && !isOnLedge && !isWalled && !isParrying && !isKnockbacking;
         if (controls.Player.Dash.WasPressedThisFrame() && canDash && dashCondition)
         {
+            if (isInPogo)
+            {
+                if(inputDirection.x >= 0.1f)
+                    transform.localScale = new Vector3(1, 1, 1);
+                else if (inputDirection.x <= -0.1f)
+                    transform.localScale = new Vector3(-1, 1, 1);
+            }
+
             if (isAttacking)
             {
                 isAttacking = false;
@@ -770,7 +778,6 @@ public class PlayerController : MonoBehaviour
         if (isKnockbacking)
         {
             rb.velocity = knockbackDirection * knockbackForce;
-            print(knockbackDirection * knockbackForce);
         }
     }
     private IEnumerator KnockbackTime(bool playerHit)
