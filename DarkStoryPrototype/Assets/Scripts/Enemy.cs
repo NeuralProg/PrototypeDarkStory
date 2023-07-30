@@ -54,7 +54,6 @@ public class Enemy : MonoBehaviour
 
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -20, 20));    // Limit the max Y speed
 
-        anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         if(!isKnockbacking)
             rb.velocity = new Vector2(0f, rb.velocity.y);
     }
@@ -97,7 +96,7 @@ public class Enemy : MonoBehaviour
             Instantiate(deathParticles, transform.position, transform.rotation);
         }
 
-        Destroy(gameObject);
+        Destroy(gameObject.transform.parent.gameObject);
     }
 
     private void OnCollisionStay2D(Collision2D collision)
