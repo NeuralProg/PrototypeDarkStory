@@ -253,6 +253,9 @@ public class PlayerController : MonoBehaviour
         isGrounded = Physics2D.OverlapBox(groundPos.position, new Vector2(0.4f, 0.25f), 0f, groundMask);
         isFalling = rb.velocity.y < 0 && !isGrounded;
 
+        if (isFalling && rb.velocity.y < -19f)
+            shouldPlayLandEffect = true;
+
         if (isGrounded)
         {
             // Reset mechanics cooldown
@@ -311,9 +314,6 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         bool canJump = (jumpCoyoteTimer >= 0) && !isJumping && !isParrying && !isKnockbacking;
-
-        if (isFalling && rb.velocity.y < -27f)
-            shouldPlayLandEffect = true;
 
         if (isFalling)
             isJumping = false;

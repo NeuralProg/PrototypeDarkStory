@@ -14,6 +14,9 @@ public class Enemy : MonoBehaviour
     [Header("Damages")]
     [SerializeField] private int damagesOnPlayerTouch = 1;
 
+    [Header("Environement")]
+    [SerializeField] private Transform isGrounded;
+
     // Knockback
     private float knockbackForce = 4f;
     private float knockbackAttackedDuration = 0.2f;

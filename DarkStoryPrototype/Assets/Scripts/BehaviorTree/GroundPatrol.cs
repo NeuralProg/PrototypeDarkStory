@@ -24,15 +24,15 @@ namespace BehaviorDesigner.Runtime.Tasks
         [SerializeField] private bool finishOnDuration = false;
         [SerializeField] private float finishOnDurationTime = 0f;
         private float finishOnDurationTimer;
-        [SerializeField] private UnityEngine.Transform checkFront, checkGround, centerPos;
+        [SerializeField] private UnityEngine.Transform checkFront, checkGround;
         [SerializeField] private float checkRadius = 0.5f;
-        [SerializeField] private LayerMask frontJump, whatIsGround;
-        [SerializeField] private float nextWaypointDistance = 0.1f;
+        [SerializeField] private LayerMask whatIsGround, frontJump;
+        [SerializeField] private float nextWaypointDistance = 1f;
 
         [Header("Jump")]
         [SerializeField] private bool jumpEnabled = true;
         [SerializeField] private float playerDistanceToJump = 0f;
-        [SerializeField] private float jumpMaxHeightActivation = 0.5f;
+        [SerializeField] private float jumpMaxHeightActivation = 0.8f;
         [SerializeField] private float jumpForce = 15f;
         private bool isGrounded = false;
 
@@ -108,12 +108,13 @@ namespace BehaviorDesigner.Runtime.Tasks
             // Direction Calculation
             UnityEngine.Vector2 direction = ((UnityEngine.Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
 
+            Debug.Log(direction);
             rb.velocity = new UnityEngine.Vector2(direction.x * speed, rb.velocity.y);
 
             // Jump
             if (jumpEnabled && isGrounded)
             {
-                if ((direction.y > jumpMaxHeightActivation && Mathf.Abs(centerPos.transform.position.x - player.transform.position.x) <= playerDistanceToJump) || Physics2D.OverlapCircle(checkFront.position, checkRadius, frontJump))
+                if ((direction.y > jumpMaxHeightActivation && Mathf.Abs(transform.position.x - player.transform.position.x) <= playerDistanceToJump) || Physics2D.OverlapCircle(checkFront.position, checkRadius, frontJump))
                 {
                     rb.velocity = new UnityEngine.Vector2(rb.velocity.x, jumpForce);
                     gameObject.GetComponentInChildren<Animator>().SetTrigger("Jump");
