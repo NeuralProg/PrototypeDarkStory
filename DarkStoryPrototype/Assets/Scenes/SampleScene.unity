@@ -348,7 +348,7 @@ MonoBehaviour:
   slamAttackPos: {fileID: 1301938940}
   slamAttackSize: {x: 2.2, y: 1.5}
   fallAttackPos: {fileID: 1471301408}
-  fallAttackSize: {x: 0.8, y: 1}
+  fallAttackSize: {x: 0.8, y: 1.21}
   pogoPoint: {fileID: 131001281}
   pogoSlashEffect: {fileID: 3521671826601994075, guid: 59747f74adabe864395e54639c8d9922, type: 3}
   ledgeDetectionInTop: {fileID: 341881399}
@@ -2772,7 +2772,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1301938939}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -2991,7 +2991,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 1}
+  m_Size: {x: 0.82879066, y: 1.21}
   m_EdgeRadius: 0
 --- !u!1 &1555303519
 GameObject:

@@ -53,7 +53,7 @@ namespace BehaviorDesigner.Runtime.Tasks
 
         public override TaskStatus OnUpdate()
         {
-            if (GetComponent<Enemy>().isKnockbacking)
+            if (GetComponent<Enemy>().isKnockbacking && Random.Range(0, 2) == 0)
             {
                 sr.gameObject.transform.localPosition = initialLocalSpritePos;
                 StopAllCoroutines();

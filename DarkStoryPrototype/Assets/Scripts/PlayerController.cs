@@ -266,8 +266,8 @@ public class PlayerController : MonoBehaviour
             if (shouldPlayLandEffect)       
             {
                 shouldPlayLandEffect = false;
-                anim.SetTrigger("LandAnim");
-                StartCoroutine(CannotMoveCooldown(0.2f / 0.6f));
+                //anim.SetTrigger("LandAnim");                      // to adjust later
+                //StartCoroutine(CannotMoveCooldown(0.2f / 0.6f));
             }
         }
         else
@@ -543,10 +543,10 @@ public class PlayerController : MonoBehaviour
         {
             activePogoSlashEffect = Instantiate(pogoSlashEffect, pogoPoint.position, pogoPoint.rotation);
             activePogoSlashEffect.GetComponentInChildren<Animator>().SetTrigger("Appear");
-            Destroy(activePogoSlashEffect, 0.15f/0.6f);
+            Destroy(activePogoSlashEffect, 0.13f/0.6f);
         }
 
-        StartCoroutine(PerformAttack(fallAttackPos, fallAttackSize, 0.20f / 0.6f, 0f, 0f, false, 0f));
+        StartCoroutine(PerformAttack(fallAttackPos, fallAttackSize, 0.13f / 0.6f, 0f, 0f, false, 0f));
     }
     private IEnumerator PerformAttack(Transform attackCollisionPosition, Vector2 attackCollisionSize, float attackDuration, float attackDetectionDelay, float attackCooldown, bool shouldTriggerCombo = false, float comboTime = 0f)
     {
