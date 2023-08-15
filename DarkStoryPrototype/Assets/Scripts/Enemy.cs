@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
     // Knockback
     private float knockbackForce = 4f;
     private float knockbackAttackedDuration = 0.2f;
-    private bool isKnockbacking;
+    [HideInInspector] public bool isKnockbacking;
     private Vector2 knockbackDirection;
 
     [Header("Effects")]
@@ -87,6 +87,11 @@ public class Enemy : MonoBehaviour
         StartCoroutine(KnockbackTime());
     }
 
+    public void DealDamageToPlayer(int damageAmount)
+    {
+        PlayerController.instance.TakeDamage(centerPoint.position, damageAmount);
+    }
+
     private IEnumerator Die()
     {
         anim.SetTrigger("Dead");
@@ -105,8 +110,8 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if(LayerMask.LayerToName(collision.gameObject.layer) == "Player")
-            PlayerController.instance.TakeDamage(centerPoint.position, damagesOnPlayerTouch);
+        if (LayerMask.LayerToName(collision.gameObject.layer) == "Player")
+            DealDamageToPlayer(damagesOnPlayerTouch);
     }
 
     private void HandleKnockback()

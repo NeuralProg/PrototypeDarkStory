@@ -36,8 +36,11 @@ namespace BehaviorDesigner.Runtime.Tasks
 
         public override void OnStart()
         {
-            currentWaypointIndex = -1;
-            FindNewTargetPoint();
+            if (shouldPatrolRandomly)
+                currentWaypointIndex = Random.Range(0, waypoints.Length);
+            else
+                currentWaypointIndex = 0;
+
             finished = false;
 
             player = PlayerController.instance;
@@ -72,17 +75,23 @@ namespace BehaviorDesigner.Runtime.Tasks
         private void Move()
         {
             float direction = (currentTargetedPoint.x - transform.position.x) / Mathf.Abs(currentTargetedPoint.x - transform.position.x);
-            rb.velocity = new UnityEngine.Vector2(moveSpeed * direction, rb.velocity.y);     // clamp Y velocity and move to target
+            if (!GetComponent<Enemy>().isKnockbacking)
+            {
+                if(!shouldChasePlayer)
+                    rb.velocity = new UnityEngine.Vector2(moveSpeed * direction, rb.velocity.y);     // move to target
+                else if (currentTargetedPoint.x - transform.position.x > 0.3f || currentTargetedPoint.x - transform.position.x < -0.3f)
+                    rb.velocity = new UnityEngine.Vector2(moveSpeed * direction, rb.velocity.y);     // move to target but leave a dead zone
+            }
 
             // Turn
-            if (rb.velocity.x > 0.1f)
+            if (rb.velocity.x > 0.1f && !GetComponent<Enemy>().isKnockbacking)
             {
                 if(!shouldChasePlayer)
                     transform.localScale = new UnityEngine.Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
                 else if(currentTargetedPoint.x - transform.position.x > 0.3f || currentTargetedPoint.x - transform.position.x < -0.3f)
                     transform.localScale = new UnityEngine.Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
-            else if (rb.velocity.x < -0.1f)
+            else if (rb.velocity.x < -0.1f && !GetComponent<Enemy>().isKnockbacking)
             {
                 if (!shouldChasePlayer)
                     transform.localScale = new UnityEngine.Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);

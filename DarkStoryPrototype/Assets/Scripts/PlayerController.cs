@@ -313,7 +313,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        bool canJump = (jumpCoyoteTimer >= 0) && !isJumping && !isParrying && !isKnockbacking;
+        bool canJump = (jumpCoyoteTimer >= 0) && !isJumping && !isParrying;
 
         if (isFalling)
             isJumping = false;
@@ -523,7 +523,7 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("SpinAttack");
         if (combo)
-            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.22f / 0.6f, 0f, 0.5f, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.22f / 0.6f, 0f, 0.1f, true, 0));
         else
             StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.22f / 0.6f, 0f, 0.1f));
     }
