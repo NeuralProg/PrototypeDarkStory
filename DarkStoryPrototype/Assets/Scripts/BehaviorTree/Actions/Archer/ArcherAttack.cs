@@ -82,7 +82,8 @@ namespace BehaviorDesigner.Runtime.Tasks
             sr.gameObject.transform.localPosition = new UnityEngine.Vector3(sr.gameObject.transform.localPosition.x + 0.4f, sr.gameObject.transform.localPosition.y, sr.gameObject.transform.localPosition.z);
             yield return new WaitForSeconds(0.25f / 0.6f);
             DealDamage();
-            yield return new WaitForSeconds(0.35f / 0.6f);
+            yield return new WaitForSeconds(0.34f / 0.6f);
+            anim.SetTrigger("ReturnToIdle");
             sr.gameObject.transform.localPosition = initialLocalSpritePos;
             finished = true;
         }
