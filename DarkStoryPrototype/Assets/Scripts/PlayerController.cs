@@ -507,17 +507,17 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("Slash1");
         if (combo)
-            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.25f / 0.6f, 0f, 0f, true, comboTimeAuthorized)); 
+            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.12f / 0.6f, 0f, 0f, true, comboTimeAuthorized)); 
         else
-            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.25f / 0.6f, 0f, 0.1f));
+            StartCoroutine(PerformAttack(slash1Pos, slash1Size, 0.12f / 0.6f, 0f, 0.1f));
     }
     private void Slash2(bool combo = true)
     {
         anim.SetTrigger("Slash2");
         if (combo)
-            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.19f / 0.6f, 0.05f / 0.6f, 0f, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.1f / 0.6f, 0.05f / 0.6f, 0f, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.18f / 0.6f, 0.05f / 0.6f, 0.1f, false, 0f));
+            StartCoroutine(PerformAttack(slash2Pos, slash2Size, 0.09f / 0.6f, 0.05f / 0.6f, 0.1f, false, 0f));
     }
     private void SpinAttack(bool combo = true)
     {
@@ -531,9 +531,9 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("SlamAttack");
         if (combo)
-            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.27f / 0.6f, 0.06f / 0.6f, 0, true, comboTimeAuthorized));
+            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.14f / 0.6f, 0.06f / 0.6f, 0, true, comboTimeAuthorized));
         else
-            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.27f / 0.6f, 0.06f / 0.6f, 0.3f));
+            StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.14f / 0.6f, 0.06f / 0.6f, 0.3f));
     }
     private void FallAttack()
     {
@@ -543,10 +543,10 @@ public class PlayerController : MonoBehaviour
         {
             activePogoSlashEffect = Instantiate(pogoSlashEffect, pogoPoint.position, pogoPoint.rotation);
             activePogoSlashEffect.GetComponentInChildren<Animator>().SetTrigger("Appear");
-            Destroy(activePogoSlashEffect, 0.13f/0.6f);
+            Destroy(activePogoSlashEffect, 0.1f/0.6f);
         }
 
-        StartCoroutine(PerformAttack(fallAttackPos, fallAttackSize, 0.13f / 0.6f, 0f, 0f, false, 0f));
+        StartCoroutine(PerformAttack(fallAttackPos, fallAttackSize, 0.1f / 0.6f, 0f, 0f, false, 0f));
     }
     private IEnumerator PerformAttack(Transform attackCollisionPosition, Vector2 attackCollisionSize, float attackDuration, float attackDetectionDelay, float attackCooldown, bool shouldTriggerCombo = false, float comboTime = 0f)
     {
