@@ -20,6 +20,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         [SerializeField] private UnityEngine.Vector2 specialAttackSize;
         [SerializeField] private int normalAttackDamages = 1;
         [SerializeField] private int specialAttackDamages = 2;
+        private bool hasHitPlayer;
         private bool finished;
 
         [Header("References")]
@@ -36,6 +37,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         public override void OnStart()
         {
             finished = false;
+            hasHitPlayer = false;
 
             rb = GetComponent<Rigidbody2D>();
             initialLocalSpritePos = sr.gameObject.transform.localPosition;
@@ -77,12 +79,21 @@ namespace BehaviorDesigner.Runtime.Tasks
 
         private IEnumerator NormalAttack()
         {
+            hasHitPlayer = false;
             rb.velocity = new UnityEngine.Vector2(0f, rb.velocity.y);
             anim.SetTrigger("Attack");
             sr.gameObject.transform.localPosition = new UnityEngine.Vector3(sr.gameObject.transform.localPosition.x + 0.4f, sr.gameObject.transform.localPosition.y, sr.gameObject.transform.localPosition.z);
-            yield return new WaitForSeconds(0.25f / 0.6f);
+            yield return new WaitForSeconds(0.4f / 0.6f);
             DealDamage();
-            yield return new WaitForSeconds(0.34f / 0.6f);
+            yield return new WaitForSeconds(0.025f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.025f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.025f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.025f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.18f / 0.6f);
             anim.SetTrigger("ReturnToIdle");
             sr.gameObject.transform.localPosition = initialLocalSpritePos;
             finished = true;
@@ -104,8 +115,11 @@ namespace BehaviorDesigner.Runtime.Tasks
                 var collisionDetected = Physics2D.OverlapBoxAll(normalAttackPos.position, normalAttackSize, 0);
                 foreach (Collider2D attackable in collisionDetected)
                 {
-                    if (LayerMask.LayerToName(attackable.gameObject.layer) == "Player")
+                    if (LayerMask.LayerToName(attackable.gameObject.layer) == "Player" && !hasHitPlayer)
+                    {
                         GetComponent<Enemy>().DealDamageToPlayer(normalAttackDamages);
+                        hasHitPlayer = true;
+                    }
                 }
             }
             else
