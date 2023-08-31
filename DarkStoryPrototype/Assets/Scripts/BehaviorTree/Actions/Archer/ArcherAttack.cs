@@ -117,9 +117,12 @@ namespace BehaviorDesigner.Runtime.Tasks
 
             rb.velocity = new UnityEngine.Vector2(0f, rb.velocity.y); // vanish
             anim.SetTrigger("SpecialAttackVanish");
+
+            yield return new WaitForSeconds(0.18f / 0.6f);
+
             gameObject.layer = LayerMask.NameToLayer("EnemyNoColWithPlayer");
 
-            yield return new WaitForSeconds(0.42f / 0.6f);
+            yield return new WaitForSeconds(0.24f / 0.6f);
 
             gameObject.layer = LayerMask.NameToLayer("Enemy"); // Shoot
             gameObject.transform.position = new UnityEngine.Vector3(transform.position.x + (-transform.localScale.x * 1.5f), transform.position.y, transform.position.z);
