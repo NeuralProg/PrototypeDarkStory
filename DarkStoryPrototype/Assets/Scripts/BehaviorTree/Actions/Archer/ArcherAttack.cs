@@ -28,6 +28,8 @@ namespace BehaviorDesigner.Runtime.Tasks
         [SerializeField] private SpriteRenderer sr;
         private Rigidbody2D rb;
         private UnityEngine.Vector3 initialLocalSpritePos;
+        private UnityEngine.Vector2 initialLocalCollisionSize;
+        private UnityEngine.Vector2 initialLocalCollisionOffset;
 
         #endregion
 
@@ -41,6 +43,8 @@ namespace BehaviorDesigner.Runtime.Tasks
 
             rb = GetComponent<Rigidbody2D>();
             initialLocalSpritePos = sr.gameObject.transform.localPosition;
+            initialLocalCollisionSize = GetComponent<CapsuleCollider2D>().size;
+            initialLocalCollisionOffset = GetComponent<CapsuleCollider2D>().offset; // change the x offset of the collision when the enemy move during the anim
 
             if (!GetComponent<Enemy>().isKnockbacking)
             {
