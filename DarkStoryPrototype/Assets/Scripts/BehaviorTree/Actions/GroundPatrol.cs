@@ -26,6 +26,9 @@ namespace BehaviorDesigner.Runtime.Tasks
         private bool finished = false;
 
         [Header("References")]
+        [SerializeField] private Transform frontCheck;
+        [SerializeField] private float frontCheckSize;
+        [SerializeField] private LayerMask obstaclesLayers;
         private PlayerController player;
         private Rigidbody2D rb;
 
@@ -55,8 +58,10 @@ namespace BehaviorDesigner.Runtime.Tasks
         public override TaskStatus OnUpdate()
         {
             DefineTargetedPoint();
-
             Move();
+
+            if (Physics2D.OverlapCircle(frontCheck.position, frontCheckSize, obstaclesLayers))
+                finished = true;
             
             if (finished)
             {

@@ -1,3 +1,4 @@
+using BehaviorDesigner.Runtime.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class Enemy : MonoBehaviour
 
     [Header("Environement")]
     [SerializeField] private Transform isGrounded;
+    [HideInInspector] public bool playerDetected;
 
     // Knockback
     private float knockbackForce = 4f;
