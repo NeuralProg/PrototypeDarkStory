@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
 
     // Knockback
     private float knockbackForce = 4f;
-    private float knockbackAttackedDuration = 0.2f;
+    private float knockbackAttackedDuration = 0.1f;
     [HideInInspector] public bool isKnockbacking;
     private Vector2 knockbackDirection;
 
@@ -98,6 +98,7 @@ public class Enemy : MonoBehaviour
         dead = true;
         gameObject.layer = LayerMask.NameToLayer("NoColPlayerEnemy");
 
+        rb.velocity = new Vector2(0f, rb.velocity.y);
         yield return new WaitForSeconds(deathAnimTime);
 
         if(deathParticles != null)
