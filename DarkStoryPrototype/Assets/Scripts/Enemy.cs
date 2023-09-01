@@ -2,6 +2,7 @@ using BehaviorDesigner.Runtime.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Enemy : MonoBehaviour
 {
@@ -9,14 +10,17 @@ public class Enemy : MonoBehaviour
 
     [Header("Health")]
     [SerializeField] private int maxHealth = 4;
-    private int currentHealth;
+    [HideInInspector] public int currentHealth;
     private bool dead;
 
     [Header("Damages")]
     [SerializeField] private int damagesOnPlayerTouch = 1;
 
     [Header("Environement")]
-    [SerializeField] private Transform isGrounded;
+    [SerializeField] private LayerMask groundMask;
+    [SerializeField] private UnityEngine.Transform groundCheck;
+    private bool isGrounded;
+    private int damagesOnLand = 0;
     [HideInInspector] public bool playerDetected;
 
     // Knockback
@@ -26,6 +30,8 @@ public class Enemy : MonoBehaviour
     private Vector2 knockbackDirection;
 
     [Header("Effects")]
+    [SerializeField] private GameObject playerSpottedParticles;
+    [SerializeField] private Transform playerSpottedParticlesPoint;
     [SerializeField] private GameObject damagedParticles;
     [SerializeField] private GameObject deathParticles;
     [SerializeField] private float deathAnimTime;
@@ -51,6 +57,21 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         HandleKnockback();
+
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundMask);
+
+        if(rb.velocity.y < -15f && !isGrounded)
+            damagesOnLand = maxHealth;
+        else if (rb.velocity.y < -10f && !isGrounded)
+            damagesOnLand = 2;
+        else if (rb.velocity.y < -5f && !isGrounded)
+            damagesOnLand = 1;
+
+        if (isGrounded && damagesOnLand > 0)
+        {
+            TakeDamage(damagesOnLand);
+            damagesOnLand = 0;
+        }
 
         if (currentHealth <= 0 && !dead)
         {
@@ -115,6 +136,15 @@ public class Enemy : MonoBehaviour
     {
         if (LayerMask.LayerToName(collision.gameObject.layer) == "Player")
             DealDamageToPlayer(damagesOnPlayerTouch);
+    }
+
+    public void DetectPlayer()
+    {
+        playerDetected = true;
+        if (playerSpottedParticles != null)
+        {
+            Instantiate(playerSpottedParticles, playerSpottedParticlesPoint.position, playerSpottedParticlesPoint.rotation);
+        }
     }
 
     private void HandleKnockback()

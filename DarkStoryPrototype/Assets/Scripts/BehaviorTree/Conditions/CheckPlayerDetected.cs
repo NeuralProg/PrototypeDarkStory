@@ -23,7 +23,8 @@ namespace BehaviorDesigner.Runtime.Tasks
             {
                 if (((player.position.x >= (transform.position.x - rangeToStartChaseX) && player.position.x <= (transform.position.x + rangeToStartChaseX)) && (player.position.y >= (transform.position.y - rangeToStartChaseY) && player.position.y <= (transform.position.y + rangeToStartChaseY))) || GetComponent<Enemy>().playerDetected)
                 {
-                    GetComponent<Enemy>().playerDetected = true;
+                    if(!GetComponent<Enemy>().playerDetected)
+                        GetComponent<Enemy>().DetectPlayer();
                     return TaskStatus.Success;
                 }
                 else
@@ -35,7 +36,8 @@ namespace BehaviorDesigner.Runtime.Tasks
             {
                 if ((player.position.x >= (transform.position.x - rangeToStartChaseX) && player.position.x <= (transform.position.x + rangeToStartChaseX)) && (player.position.y >= (transform.position.y - rangeToStartChaseY) && player.position.y <= (transform.position.y + rangeToStartChaseY)))
                 {
-                    GetComponent<Enemy>().playerDetected = true;
+                    if (!GetComponent<Enemy>().playerDetected)
+                        GetComponent<Enemy>().DetectPlayer();
                     return TaskStatus.Success;
                 }
                 else
