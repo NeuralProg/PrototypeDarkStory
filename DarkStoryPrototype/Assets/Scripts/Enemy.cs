@@ -35,6 +35,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject damagedParticles;
     [SerializeField] private GameObject deathParticles;
     [SerializeField] private float deathAnimTime;
+    private GameObject damagedParticlesObject;
 
     [Header("Components refs")]
     public Transform centerPoint;
@@ -59,6 +60,11 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         HandleKnockback();
+
+        if(damagedParticlesObject != null)
+        {
+            damagedParticlesObject.transform.position = centerPoint.position;
+        }
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundMask);
 
@@ -102,8 +108,7 @@ public class Enemy : MonoBehaviour
         else 
         {
             if (damagedParticles != null && !dead)
-                Instantiate(damagedParticles, transform.position, transform.rotation);
-            anim.SetTrigger("Damage");
+                damagedParticlesObject = Instantiate(damagedParticles, centerPoint.position, centerPoint.rotation);
         }
 
         // Apply knockback
