@@ -103,20 +103,12 @@ public class Enemy : MonoBehaviour
         {
             if (damagedParticles != null && !dead)
                 Instantiate(damagedParticles, transform.position, transform.rotation);
-
-            StartCoroutine(Damage());
+            anim.SetTrigger("Damage");
         }
 
         // Apply knockback
         knockbackDirection = new Vector2(centerPoint.position.x - PlayerController.instance.centerPoint.position.x, centerPoint.position.y - PlayerController.instance.centerPoint.position.y).normalized;
         StartCoroutine(KnockbackTime());
-    }
-
-    private IEnumerator Damage()
-    {
-        sr.color = Color.red;
-        yield return new WaitForSeconds(0.1f / 0.6f);
-        sr.color = Color.white;
     }
 
     public void DealDamageToPlayer(int damageAmount)
