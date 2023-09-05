@@ -38,6 +38,7 @@ public class Enemy : MonoBehaviour
 
     [Header("Components refs")]
     public Transform centerPoint;
+    private SpriteRenderer sr;
     private Rigidbody2D rb;
     private Animator anim;
 
@@ -48,6 +49,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        sr = GetComponentInChildren<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
 
@@ -102,12 +104,19 @@ public class Enemy : MonoBehaviour
             if (damagedParticles != null && !dead)
                 Instantiate(damagedParticles, transform.position, transform.rotation);
 
-            anim.SetTrigger("Damage");
+            StartCoroutine(Damage());
         }
 
         // Apply knockback
         knockbackDirection = new Vector2(centerPoint.position.x - PlayerController.instance.centerPoint.position.x, centerPoint.position.y - PlayerController.instance.centerPoint.position.y).normalized;
         StartCoroutine(KnockbackTime());
+    }
+
+    private IEnumerator Damage()
+    {
+        sr.color = Color.red;
+        yield return new WaitForSeconds(0.1f / 0.6f);
+        sr.color = Color.white;
     }
 
     public void DealDamageToPlayer(int damageAmount)

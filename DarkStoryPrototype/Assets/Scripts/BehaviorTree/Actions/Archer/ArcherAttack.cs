@@ -24,6 +24,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         [SerializeField] private LayerMask cancelSpecialAttackLayers;
         [SerializeField] private int normalAttackDamages = 1;
         [SerializeField] private int specialAttackDamages = 2;
+        private bool hasBeenHit = false;
         private bool hasHitPlayer;
         private bool finished;
 
@@ -41,6 +42,7 @@ namespace BehaviorDesigner.Runtime.Tasks
 
         public override void OnStart()
         {
+            hasBeenHit = false;
             finished = false;
             hasHitPlayer = false;
 
@@ -63,13 +65,20 @@ namespace BehaviorDesigner.Runtime.Tasks
 
         public override TaskStatus OnUpdate()
         {
-            if (GetComponent<Enemy>().isKnockbacking && Random.Range(0, 2) == 0)
+            bool cancelChance = Random.Range(0, 6) == 0;
+            if (GetComponent<Enemy>().isKnockbacking)
             {
-                sr.gameObject.transform.localPosition = initialLocalSpritePos;
-                GetComponent<CapsuleCollider2D>().offset = initialLocalCollisionOffset;
-                StopAllCoroutines();
-                finished = false;
-                return TaskStatus.Success;
+                if (cancelChance && !hasBeenHit)
+                {
+                    Debug.Log("canceled");
+                    anim.SetTrigger("ReturnToIdle");
+                    sr.gameObject.transform.localPosition = initialLocalSpritePos;
+                    GetComponent<CapsuleCollider2D>().offset = initialLocalCollisionOffset;
+                    StopAllCoroutines();
+                    finished = false;
+                    return TaskStatus.Success;
+                }
+                hasBeenHit = true;
             }
 
             if (finished)
