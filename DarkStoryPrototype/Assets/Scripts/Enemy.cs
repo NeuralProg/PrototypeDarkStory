@@ -152,7 +152,7 @@ public class Enemy : MonoBehaviour
             Instantiate(playerSpottedParticles, playerSpottedParticlesPoint.position, playerSpottedParticlesPoint.rotation);
         }
     }
-
+    
     private void HandleKnockback()
     {
         if (isKnockbacking)
