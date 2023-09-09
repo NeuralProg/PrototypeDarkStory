@@ -140,36 +140,49 @@ namespace BehaviorDesigner.Runtime.Tasks
         {
             hasHitPlayer = false;
 
-            rb.velocity = new UnityEngine.Vector2(0f, rb.velocity.y); // vanish
-            anim.SetTrigger("SpecialAttackVanish");
+            rb.velocity = new UnityEngine.Vector2(0f, rb.velocity.y); 
+            anim.SetTrigger("AttackCombo");
 
-            yield return new WaitForSeconds(0.18f / 0.6f);
+            yield return new WaitForSeconds(0.11f / 0.6f);
 
+            hasHitPlayer = false;
             gameObject.layer = LayerMask.NameToLayer("EnemyNoColWithPlayer");
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage();
 
-            yield return new WaitForSeconds(0.24f / 0.6f);
+            gameObject.layer = LayerMask.NameToLayer("Enemy");
+            GetComponent<CapsuleCollider2D>().offset = new UnityEngine.Vector2(1.72f, 0f);
 
-            gameObject.layer = LayerMask.NameToLayer("Enemy"); // Shoot
-            gameObject.transform.position = new UnityEngine.Vector3(transform.position.x + (-transform.localScale.x * 1.5f), transform.position.y, transform.position.z);
-            sr.gameObject.transform.localPosition = new UnityEngine.Vector3(sr.gameObject.transform.localPosition.x + 2.3f, sr.gameObject.transform.localPosition.y, sr.gameObject.transform.localPosition.z);
-            anim.SetTrigger("SpecialAttackShoot");
+            yield return new WaitForSeconds(0.14f / 0.6f);
 
-            yield return new WaitForSeconds(0.15f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.025f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.025f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.025f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.025f / 0.6f);
-            DealDamage();
-            GetComponent<CapsuleCollider2D>().offset -= new UnityEngine.Vector2(0.3f, 0f);
+            hasHitPlayer = false;
+            gameObject.layer = LayerMask.NameToLayer("EnemyNoColWithPlayer");
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage(false);
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage(false);
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage(false);
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage(false);
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage(false);
 
-            yield return new WaitForSeconds(0.52f / 0.6f);
+            gameObject.layer = LayerMask.NameToLayer("Enemy");
+            GetComponent<CapsuleCollider2D>().offset = new UnityEngine.Vector2(2.25f, 0f);
+
+            yield return new WaitForSeconds(0.05f / 0.6f);
 
             anim.SetTrigger("ReturnToIdle");
-            sr.gameObject.transform.localPosition = initialLocalSpritePos;
+            gameObject.transform.position = new UnityEngine.Vector3(transform.position.x + (transform.localScale.x * 2.26f), transform.position.y, transform.position.z);
             GetComponent<CapsuleCollider2D>().offset = initialLocalCollisionOffset;
             finished = true;
         }
@@ -178,41 +191,43 @@ namespace BehaviorDesigner.Runtime.Tasks
         {
             hasHitPlayer = false;
 
-            rb.velocity = new UnityEngine.Vector2(0f, rb.velocity.y); // vanish
-            anim.SetTrigger("SpecialAttackVanish");
+            rb.velocity = new UnityEngine.Vector2(0f, rb.velocity.y);
+            anim.SetTrigger("AirAttack");
 
-            yield return new WaitForSeconds(0.18f / 0.6f);
+            yield return new WaitForSeconds(0.14f / 0.6f);
 
             gameObject.layer = LayerMask.NameToLayer("EnemyNoColWithPlayer");
 
-            yield return new WaitForSeconds(0.24f / 0.6f);
+            yield return new WaitForSeconds(0.35f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage();
+            yield return new WaitForSeconds(0.01f / 0.6f);
+            DealDamage();
 
-            gameObject.layer = LayerMask.NameToLayer("Enemy"); // Shoot
-            gameObject.transform.position = new UnityEngine.Vector3(transform.position.x + (-transform.localScale.x * 1.5f), transform.position.y, transform.position.z);
-            sr.gameObject.transform.localPosition = new UnityEngine.Vector3(sr.gameObject.transform.localPosition.x + 2.3f, sr.gameObject.transform.localPosition.y, sr.gameObject.transform.localPosition.z);
-            anim.SetTrigger("SpecialAttackShoot");
+            yield return new WaitForSeconds(0.07f / 0.6f);
 
-            yield return new WaitForSeconds(0.15f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.025f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.025f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.025f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.025f / 0.6f);
-            DealDamage();
-            GetComponent<CapsuleCollider2D>().offset -= new UnityEngine.Vector2(0.3f, 0f);
-
-            yield return new WaitForSeconds(0.52f / 0.6f);
-
+            gameObject.layer = LayerMask.NameToLayer("Enemy");
             anim.SetTrigger("ReturnToIdle");
-            sr.gameObject.transform.localPosition = initialLocalSpritePos;
             GetComponent<CapsuleCollider2D>().offset = initialLocalCollisionOffset;
             finished = true;
         }
 
-        private void DealDamage()
+        private void DealDamage(bool comboFirstAttack = true)
         {
             if (attackType == 1)
             {
@@ -228,13 +243,28 @@ namespace BehaviorDesigner.Runtime.Tasks
             }
             else if (attackType == 2)
             {
-                var collisionDetected = Physics2D.OverlapBoxAll(comboAttackPos.position, comboAttackSize, 0);
-                foreach (Collider2D attackable in collisionDetected)
+                if (comboFirstAttack)
                 {
-                    if (LayerMask.LayerToName(attackable.gameObject.layer) == "Player" && !hasHitPlayer)
+                    var collisionDetected = Physics2D.OverlapBoxAll(comboAttackPos1.position, comboAttackSize1, 0);
+                    foreach (Collider2D attackable in collisionDetected)
                     {
-                        GetComponent<Enemy>().DealDamageToPlayer(comboAttackDamages);
-                        hasHitPlayer = true;
+                        if (LayerMask.LayerToName(attackable.gameObject.layer) == "Player" && !hasHitPlayer)
+                        {
+                            GetComponent<Enemy>().DealDamageToPlayer(comboAttackDamages);
+                            hasHitPlayer = true;
+                        }
+                    }
+                }
+                else
+                {
+                    var collisionDetected = Physics2D.OverlapBoxAll(comboAttackPos2.position, comboAttackSize2, 0);
+                    foreach (Collider2D attackable in collisionDetected)
+                    {
+                        if (LayerMask.LayerToName(attackable.gameObject.layer) == "Player" && !hasHitPlayer)
+                        {
+                            GetComponent<Enemy>().DealDamageToPlayer(comboAttackDamages);
+                            hasHitPlayer = true;
+                        }
                     }
                 }
             }
