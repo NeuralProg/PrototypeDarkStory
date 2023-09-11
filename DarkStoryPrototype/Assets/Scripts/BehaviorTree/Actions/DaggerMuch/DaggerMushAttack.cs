@@ -195,10 +195,17 @@ namespace BehaviorDesigner.Runtime.Tasks
             anim.SetTrigger("AirAttack");
 
             yield return new WaitForSeconds(0.14f / 0.6f);
+            rb.gravityScale = 0f;
+            GetComponent<CapsuleCollider2D>().offset = new UnityEngine.Vector2(0.14f, 1.1f);
 
+            yield return new WaitForSeconds(0.04f / 0.6f);
+
+            GetComponent<CapsuleCollider2D>().offset = new UnityEngine.Vector2(0.15f, 2.02f);
+
+            yield return new WaitForSeconds(0.31f / 0.6f);
+            rb.gravityScale = 1f;
             gameObject.layer = LayerMask.NameToLayer("EnemyNoColWithPlayer");
-
-            yield return new WaitForSeconds(0.35f / 0.6f);
+            GetComponent<CapsuleCollider2D>().offset = initialLocalCollisionOffset;
             DealDamage();
             yield return new WaitForSeconds(0.01f / 0.6f);
             DealDamage();
