@@ -305,11 +305,11 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = new Vector2(0f, rb.velocity.y);
         }
 
-        if(rb.velocity.x < -0.1f && !isAttacking && !isInPogo && !isKnockbacking)
+        if(rb.velocity.x < -0.1f && !isAttacking && !isInPogo && !isKnockbacking && !isParrying)
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
-        else if(rb.velocity.x > 0.1f && !isAttacking && !isInPogo && !isKnockbacking)
+        else if(rb.velocity.x > 0.1f && !isAttacking && !isInPogo && !isKnockbacking && !isParrying)
         {
             transform.localScale = new Vector3(1, 1, 1);
         }
@@ -778,7 +778,7 @@ public class PlayerController : MonoBehaviour
         anim.SetTrigger("SuccessfullParry");
         isParrying = true;
         inParryCooldown = false;
-        rb.velocity = Vector2.zero;
+        rb.velocity = new Vector2(0f, rb.velocity.y);
         Time.timeScale = 0.5f;
 
         yield return new WaitForSeconds((0.15f / 0.6f) / 2);
