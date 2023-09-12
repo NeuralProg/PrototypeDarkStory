@@ -10,6 +10,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         [SerializeField] private float rangeToStartChaseX;
         [SerializeField] private float rangeToStartChaseY;
         [SerializeField] private bool shouldStillTrue = false;
+        [SerializeField] private bool shouldOnlyCheckDistance = false;
         private Transform player;
 
         public override void OnStart()
@@ -36,7 +37,7 @@ namespace BehaviorDesigner.Runtime.Tasks
             {
                 if ((player.position.x >= (transform.position.x - rangeToStartChaseX) && player.position.x <= (transform.position.x + rangeToStartChaseX)) && (player.position.y >= (transform.position.y - rangeToStartChaseY) && player.position.y <= (transform.position.y + rangeToStartChaseY)))
                 {
-                    if (!GetComponent<Enemy>().playerDetected)
+                    if (!GetComponent<Enemy>().playerDetected && !shouldOnlyCheckDistance)
                         GetComponent<Enemy>().DetectPlayer();
                     return TaskStatus.Success;
                 }
