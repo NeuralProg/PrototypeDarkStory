@@ -226,7 +226,7 @@ namespace BehaviorDesigner.Runtime.Tasks
             yield return new WaitForSeconds(0.01f / 0.6f);
             DealDamage();
 
-            yield return new WaitForSeconds(0.07f / 0.6f);
+            yield return new WaitForSeconds(0.09f / 0.6f);
 
             gameObject.layer = LayerMask.NameToLayer("Enemy");
             anim.SetTrigger("ReturnToIdle");
