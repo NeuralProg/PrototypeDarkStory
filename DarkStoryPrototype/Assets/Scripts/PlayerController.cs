@@ -421,11 +421,13 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
         inDashCooldown = true;
         rb.gravityScale = 0f;
+        gameObject.layer = LayerMask.NameToLayer("PlayerNoColWithEnemy");
 
         yield return new WaitForSeconds(dashDuration);
 
         isDashing = false;
         rb.gravityScale = 5f;
+        gameObject.layer = LayerMask.NameToLayer("Player");
 
         yield return new WaitForSeconds(dashCooldown);
 
