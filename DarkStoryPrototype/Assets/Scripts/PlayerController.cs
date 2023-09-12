@@ -76,6 +76,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 slash2Size;
     [SerializeField] private Transform spinAttackPos;
     [SerializeField] private Vector2 spinAttackSize;
+    [SerializeField] private Transform rollAttackPos;
+    [SerializeField] private Vector2 rollAttackSize;
     [SerializeField] private Transform slamAttackPos;
     [SerializeField] private Vector2 slamAttackSize;
     [SerializeField] private Transform fallAttackPos;
@@ -211,6 +213,8 @@ public class PlayerController : MonoBehaviour
                 invincibilityBlinkEffectTimer = 0f;
             }
         }
+        else
+            GetComponentInChildren<SpriteRenderer>().enabled = true;
 
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -20, 20));    // Limit the max Y speed
         anim = GetComponentInChildren<Animator>();
@@ -423,11 +427,14 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = 0f;
         gameObject.layer = LayerMask.NameToLayer("PlayerNoColWithEnemy");
 
-        yield return new WaitForSeconds(dashDuration);
+        yield return new WaitForSeconds(dashDuration * 3/4f);
+
+        gameObject.layer = LayerMask.NameToLayer("Player");
+
+        yield return new WaitForSeconds(dashDuration * 1/4f);
 
         isDashing = false;
         rb.gravityScale = 5f;
-        gameObject.layer = LayerMask.NameToLayer("Player");
 
         yield return new WaitForSeconds(dashCooldown);
 
@@ -483,6 +490,10 @@ public class PlayerController : MonoBehaviour
                         else if (comboState == 3)
                         {
                             SpinAttack();
+                        }
+                        else if(comboState == 4)
+                        {
+                            RollAttack();
                             comboState = 0;
                         }
                     }
@@ -525,7 +536,7 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("SpinAttack");
         if (combo)
-            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.22f / 0.6f, 0f, 0.1f, true, 0));
+            StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.22f / 0.6f, 0f, 0f, true, comboTimeAuthorized));
         else
             StartCoroutine(PerformAttack(spinAttackPos, spinAttackSize, 0.22f / 0.6f, 0f, 0.1f));
     }
@@ -536,6 +547,14 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.14f / 0.6f, 0.06f / 0.6f, 0, true, comboTimeAuthorized));
         else
             StartCoroutine(PerformAttack(slamAttackPos, slamAttackSize, 0.14f / 0.6f, 0.06f / 0.6f, 0.3f));
+    }
+    private void RollAttack(bool combo = true)
+    {
+        anim.SetTrigger("RollAttack");
+        if (combo)
+            StartCoroutine(PerformAttack(rollAttackPos, rollAttackSize, 0.22f / 0.6f, 0.04f / 0.6f, 0.5f, true, 0)); // no combo allowed time
+        else
+            StartCoroutine(PerformAttack(rollAttackPos, rollAttackSize, 0.22f / 0.6f, 0.04f / 0.6f, 0.3f));
     }
     private void FallAttack()
     {
@@ -728,6 +747,11 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(ParryTimer());
         }
+
+        if (isParrying)
+        {
+            rb.velocity = new Vector2(0f, rb.velocity.y);
+        }
          
         if((isOnLedge || isLedgeClimbing))
         {
@@ -744,7 +768,6 @@ public class PlayerController : MonoBehaviour
 
         isParrying = false;
         inParryCooldown = true;
-        StartCoroutine(SucessfullParry());
 
         yield return new WaitForSeconds(parryCooldown);
 
@@ -796,9 +819,17 @@ public class PlayerController : MonoBehaviour
         isKnockbacking = false;
     }
 
-    public void TakeDamage(Vector3 attackerPos, int damageAmount)
+    public void TakeDamage(Vector3 attackerPos, int damageAmount, bool isTouchDamage = false)
     {
-        if (invincibilityTimer <= 0)
+        if (isParrying && !isTouchDamage)
+        {
+            knockbackDirection = new Vector2(centerPoint.position.x - attackerPos.x, centerPoint.position.y - attackerPos.y).normalized;
+            StartCoroutine(KnockbackTime(false));
+            StartCoroutine(SucessfullParry());
+            StopCoroutine(ParryTimer());
+        }
+
+        if (invincibilityTimer <= 0 && !isParrying)
         {
             // Knockback
             knockbackDirection = new Vector2(centerPoint.position.x - attackerPos.x, centerPoint.position.y - attackerPos.y).normalized;

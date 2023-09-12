@@ -116,9 +116,9 @@ public class Enemy : MonoBehaviour
         StartCoroutine(KnockbackTime());
     }
 
-    public void DealDamageToPlayer(int damageAmount)
+    public void DealDamageToPlayer(int damageAmount, bool isTouchDamage = false)
     {
-        PlayerController.instance.TakeDamage(centerPoint.position, damageAmount);
+        PlayerController.instance.TakeDamage(centerPoint.position, damageAmount, isTouchDamage);
     }
 
     private IEnumerator Die()
@@ -141,7 +141,7 @@ public class Enemy : MonoBehaviour
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (LayerMask.LayerToName(collision.gameObject.layer) == "Player")
-            DealDamageToPlayer(damagesOnPlayerTouch);
+            DealDamageToPlayer(damagesOnPlayerTouch, true);
     }
 
     public void DetectPlayer()
