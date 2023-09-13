@@ -22,12 +22,15 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public float moveSpeed = 4f;
 
     // Health
-    [HideInInspector] public int maxHealth = 5;
+    [HideInInspector] public int maxHealth = 3;
     public int currentHealth;
+    private float regenTime = 5f;
+    private float regenTimer;
     private float invincibilityTime = 1f;
     private float invincibilityTimer;
     private float invincibilityBlinkEffectTime = 0.1f;
     private float invincibilityBlinkEffectTimer;
+    public bool dead = false;
 
     // Damages
     [HideInInspector] public int attackDamages = 1;
@@ -64,6 +67,8 @@ public class PlayerController : MonoBehaviour
     private float dashDuration = 0.2f;
     private float dashSpeedMultiplier = 3f;
     private float dashCooldown = 0.5f;
+    private bool lastDashIsGrounded = false;
+    private bool shouldRollAttack = false;
     private bool canDash;
     private bool inDashCooldown = false;
     private bool isDashing = false;
@@ -127,10 +132,11 @@ public class PlayerController : MonoBehaviour
     private float parryCooldown = 0.5f;
     private bool inParryCooldown = false;
 
-    [Header("ComponentsReference")]
+    [Header("References")]
     public Transform centerPoint;
     [SerializeField] private GameObject defaultSprite;
     [SerializeField] private GameObject ledgeSprite;
+    private ClockUI clock;
     private Vector3 defaultLedgeSpritePosition;
     private Rigidbody2D rb;
     private Animator anim;
@@ -163,6 +169,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         // Define the reference to components
+        clock = GetComponent<ClockUI>();
         rb = GetComponent<Rigidbody2D>();       
         anim = GetComponentInChildren<Animator>();
 
@@ -215,6 +222,16 @@ public class PlayerController : MonoBehaviour
         }
         else
             GetComponentInChildren<SpriteRenderer>().enabled = true;
+
+        if(regenTimer >= 0f && !dead)
+        {
+            regenTimer -= Time.deltaTime;
+        }
+        else if(!dead)
+        {
+            currentHealth = maxHealth;
+            print("Health reset");
+        }
 
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -20, 20));    // Limit the max Y speed
         anim = GetComponentInChildren<Animator>();
@@ -285,6 +302,11 @@ public class PlayerController : MonoBehaviour
         {
             activePogoSlashEffect.transform.position = pogoPoint.position;
             activePogoSlashEffect.transform.localScale = transform.localScale;
+        }
+
+        if((currentHealth <= 0 || clock.day >= 1) && !dead)
+        {
+            Die();
         }
     }
 
@@ -427,6 +449,11 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = 0f;
         gameObject.layer = LayerMask.NameToLayer("PlayerNoColWithEnemy");
 
+        if (isGrounded)
+            lastDashIsGrounded = true;
+        else
+            lastDashIsGrounded = false;
+
         yield return new WaitForSeconds(dashDuration * 3/4f);
 
         gameObject.layer = LayerMask.NameToLayer("Player");
@@ -435,6 +462,11 @@ public class PlayerController : MonoBehaviour
 
         isDashing = false;
         rb.gravityScale = 5f;
+
+        if (shouldRollAttack)
+        {
+            RollAttack(false);
+        }
 
         yield return new WaitForSeconds(dashCooldown);
 
@@ -470,6 +502,11 @@ public class PlayerController : MonoBehaviour
         }
 
         bool attackAvailable = !isAttacking && !inAttackCooldown && !isDashing && !isOnLedge && !isWalled && !isParrying && !isKnockbacking;
+
+        if (isDashing && controls.Player.Attack.WasPressedThisFrame() && lastDashIsGrounded)
+        {
+            shouldRollAttack = true;
+        }
 
         if (attackAvailable && controls.Player.Attack.WasPressedThisFrame())
         {
@@ -554,7 +591,10 @@ public class PlayerController : MonoBehaviour
         if (combo)
             StartCoroutine(PerformAttack(rollAttackPos, rollAttackSize, 0.22f / 0.6f, 0.04f / 0.6f, 0.5f, true, 0)); // no combo allowed time
         else
+        {
             StartCoroutine(PerformAttack(rollAttackPos, rollAttackSize, 0.22f / 0.6f, 0.04f / 0.6f, 0.3f));
+            shouldRollAttack = false;
+        }
     }
     private void FallAttack()
     {
@@ -829,19 +869,40 @@ public class PlayerController : MonoBehaviour
             StopCoroutine(ParryTimer());
         }
 
-        if (invincibilityTimer <= 0 && !isParrying)
+        if (invincibilityTimer <= 0 && !isParrying && !dead)
         {
             // Knockback
             knockbackDirection = new Vector2(centerPoint.position.x - attackerPos.x, centerPoint.position.y - attackerPos.y).normalized;
             StartCoroutine(KnockbackTime(true));
 
+            clock.timeRatio += 0.2f;
             currentHealth -= damageAmount;
+            regenTimer = regenTime;
             anim.SetTrigger("Damage");
 
             invincibilityTimer = invincibilityTime;
 
             // Death here
         }
+    }
+
+    private void Die()
+    {
+        dead = true;
+        canMove = false;
+        clock.stop = true;
+        clock.day = 0;
+        gameObject.layer = LayerMask.NameToLayer("PlayerNoColWithEnemy");
+        StartCoroutine(DeathTimer());
+    }
+    private IEnumerator DeathTimer()
+    {
+        anim.SetTrigger("Dead");
+
+        yield return new WaitForSeconds(0.4f / 0.6f);
+
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        gameObject.SetActive(false);
     }
 
     #endregion

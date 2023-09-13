@@ -61,6 +61,9 @@ public class Enemy : MonoBehaviour
     {
         HandleKnockback();
 
+        if (PlayerController.instance.dead)
+            playerDetected = false;
+
         if(damagedParticlesObject != null)
         {
             damagedParticlesObject.transform.position = centerPoint.position;

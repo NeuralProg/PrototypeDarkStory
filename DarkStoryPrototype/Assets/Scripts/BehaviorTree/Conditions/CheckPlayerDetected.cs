@@ -22,7 +22,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         {
             if (shouldStillTrue)
             {
-                if (((player.position.x >= (transform.position.x - rangeToStartChaseX) && player.position.x <= (transform.position.x + rangeToStartChaseX)) && (player.position.y >= (transform.position.y - rangeToStartChaseY) && player.position.y <= (transform.position.y + rangeToStartChaseY))) || GetComponent<Enemy>().playerDetected)
+                if (!PlayerController.instance.dead && (((player.position.x >= (transform.position.x - rangeToStartChaseX) && player.position.x <= (transform.position.x + rangeToStartChaseX)) && (player.position.y >= (transform.position.y - rangeToStartChaseY) && player.position.y <= (transform.position.y + rangeToStartChaseY))) || GetComponent<Enemy>().playerDetected))
                 {
                     if(!GetComponent<Enemy>().playerDetected)
                         GetComponent<Enemy>().DetectPlayer();
@@ -35,7 +35,7 @@ namespace BehaviorDesigner.Runtime.Tasks
             }
             else
             {
-                if ((player.position.x >= (transform.position.x - rangeToStartChaseX) && player.position.x <= (transform.position.x + rangeToStartChaseX)) && (player.position.y >= (transform.position.y - rangeToStartChaseY) && player.position.y <= (transform.position.y + rangeToStartChaseY)))
+                if (!PlayerController.instance.dead && ((player.position.x >= (transform.position.x - rangeToStartChaseX) && player.position.x <= (transform.position.x + rangeToStartChaseX)) && (player.position.y >= (transform.position.y - rangeToStartChaseY) && player.position.y <= (transform.position.y + rangeToStartChaseY))))
                 {
                     if (!GetComponent<Enemy>().playerDetected && !shouldOnlyCheckDistance)
                         GetComponent<Enemy>().DetectPlayer();

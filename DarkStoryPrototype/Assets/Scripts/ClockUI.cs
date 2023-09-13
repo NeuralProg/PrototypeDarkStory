@@ -6,14 +6,18 @@ using UnityEngine.UI;
 public class ClockUI : MonoBehaviour {
 
     [HideInInspector] public const float REAL_SECONDS_PER_INGAME_DAY = 60f * 20; // How long is the day (in seconds)
-    [HideInInspector] public float timeRatio = 1f;
+    [HideInInspector] public float day; // 1 = 1 full rotation
+    [HideInInspector] public bool stop = false;
+    public float timeRatio = 1f;
 
     [SerializeField] private Transform clockMinuteHandTransform;
     [SerializeField] private Transform clockSecondHandTransform;
-    private float day;
 
     private void Update() {
-        day += (Time.deltaTime / REAL_SECONDS_PER_INGAME_DAY) * timeRatio; // we multiply the value added to the hands by the timeRatio
+        timeRatio = Mathf.Clamp(timeRatio, 0.5f, 10f); // Clamp 
+
+        if(!stop)
+            day += (Time.deltaTime / REAL_SECONDS_PER_INGAME_DAY) * timeRatio; // we multiply the value added to the hands by the timeRatio
 
         float dayNormalized = day % 1f;
 
