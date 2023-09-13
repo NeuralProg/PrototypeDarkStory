@@ -132,6 +132,11 @@ public class PlayerController : MonoBehaviour
     private float parryCooldown = 0.5f;
     private bool inParryCooldown = false;
 
+    [Header("Map")]
+    [SerializeField] private Transform mapCollisionCheckPos;
+    [SerializeField] private Vector2 mapCollisionCheckSize;
+    [SerializeField] private LayerMask mapLayer;
+
     [Header("References")]
     public Transform centerPoint;
     [SerializeField] private GameObject defaultSprite;
@@ -233,7 +238,13 @@ public class PlayerController : MonoBehaviour
             print("Health reset");
         }
 
-        rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -20, 20));    // Limit the max Y speed
+        var mapCollisionDetected = Physics2D.OverlapBoxAll(mapCollisionCheckPos.position, mapCollisionCheckSize, 0, mapLayer);
+        foreach (Collider2D room in mapCollisionDetected)
+        { 
+            room.gameObject.transform.GetChild(0).gameObject.transform.GetChild(room.gameObject.transform.GetChild(0).gameObject.transform.childCount - 1).gameObject.layer = LayerMask.NameToLayer("Map"); ;
+        }
+
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -20, 20));    // Limit the max Y speed
         anim = GetComponentInChildren<Animator>();
 
         // Set the parameters of the animator
