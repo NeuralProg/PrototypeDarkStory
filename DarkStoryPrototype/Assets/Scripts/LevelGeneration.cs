@@ -6,30 +6,34 @@ using UnityEngine;
 
 public class LevelGeneration : MonoBehaviour
 {
-    public Transform[] startingPositions;
+    [SerializeField] private Transform[] startingPositions;
     public GameObject[] TB;
     public GameObject[] TBL;
     public GameObject[] TBR;
     public GameObject[] TBLR;
+    public GameObject roomStart;
+    public GameObject roomEnd;
 
     private float moveAmount = 10f;
     private int direction;
 
     private float timeBtwRoom;
-    private float startTimeBtwRoom = 0.25f;
+    private float startTimeBtwRoom = 0f;
 
-    public LayerMask roomLayer;
-    public float maxX;
-    public float maxY;
-    public float minY;
-    private bool stopGeneration;
+    private int rightCounter;
+
+    [SerializeField] private LayerMask roomLayer;
+    [SerializeField] private float maxX;
+    [SerializeField] private float maxY;
+    [SerializeField] private float minY;
+    [HideInInspector] public bool stopGeneration;
 
 
     void Start()
     {
         int randStartingPos = Random.Range(0, startingPositions.Length);
         transform.position = startingPositions[randStartingPos].position;
-        Instantiate(TB[Random.Range(0, TB.Length)], transform.position, Quaternion.identity);
+        Instantiate(roomStart, transform.position, Quaternion.identity);
 
         direction = Random.Range(1, 6);
     }
@@ -53,6 +57,8 @@ public class LevelGeneration : MonoBehaviour
         { 
             if(transform.position.y < maxY)
             {
+                rightCounter = 0;
+
                 Vector2 newPos = new Vector2(transform.position.x, transform.position.y + moveAmount);
                 transform.position = newPos;
 
@@ -85,6 +91,8 @@ public class LevelGeneration : MonoBehaviour
         {
             if (transform.position.y > minY)
             {
+                rightCounter = 0;
+
                 Vector2 newPos = new Vector2(transform.position.x, transform.position.y - moveAmount);
                 transform.position = newPos;
 
@@ -107,19 +115,28 @@ public class LevelGeneration : MonoBehaviour
         }
         else if (direction == 5) // Move right
         {
+            rightCounter++;
+
             if(transform.position.x < maxX) 
             {
                 Collider2D roomDetection = Physics2D.OverlapCircle(transform.position, 1, roomLayer);
                 if(roomDetection.GetComponent<RoomType>().type != 2 && roomDetection.GetComponent<RoomType>().type != 3)
                 {
-                    roomDetection.GetComponent<RoomType>().RoomDestruction();
-
-                    int randRightRoom = Random.Range(2, 4);
-
-                    if (randRightRoom == 2)
-                        Instantiate(TBR[Random.Range(0, TBR.Length)], transform.position, Quaternion.identity);
-                    else if (randRightRoom == 3)
+                    if (rightCounter >= 2)
+                    {
+                        roomDetection.GetComponent<RoomType>().RoomDestruction();
                         Instantiate(TBLR[Random.Range(0, TBLR.Length)], transform.position, Quaternion.identity);
+                    }
+                    else
+                    {
+                        roomDetection.GetComponent<RoomType>().RoomDestruction();
+
+                        int randRightRoom = Random.Range(2, 4);
+                        if (randRightRoom == 2)
+                            Instantiate(TBR[Random.Range(0, TBR.Length)], transform.position, Quaternion.identity);
+                        else if (randRightRoom == 3)
+                            Instantiate(TBLR[Random.Range(0, TBLR.Length)], transform.position, Quaternion.identity);
+                    }
                 }
 
                 Vector2 newPos = new Vector2(transform.position.x + moveAmount, transform.position.y);
@@ -136,6 +153,7 @@ public class LevelGeneration : MonoBehaviour
             else
             {
                 stopGeneration = true;
+                Instantiate(roomEnd, transform.position, Quaternion.identity);
                 return;
             }
         }
