@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6125772153651996875}
   - component: {fileID: 9144282345068101291}
   - component: {fileID: 7677659464006813040}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: ForeGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 5087112233676089871}
   - component: {fileID: 6172991654177730510}
   - component: {fileID: 1354998763803030198}
-  m_Layer: 11
+  m_Layer: 22
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -415,7 +415,7 @@ GameObject:
   - component: {fileID: 2890874229146844929}
   - component: {fileID: 3499866979628744383}
   - component: {fileID: 5381887738386704578}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Behind
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -623,7 +623,7 @@ GameObject:
   - component: {fileID: 463878442106033030}
   - component: {fileID: 329626937146836958}
   - component: {fileID: 8595182446103570601}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: BackGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1082,7 +1082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06f44953c0702584d91c8e13846b7dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 4
 --- !u!61 &-7135746256688334227
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1123,7 +1123,7 @@ GameObject:
   - component: {fileID: 7667618915107026104}
   - component: {fileID: 3963099131347420022}
   - component: {fileID: 3534495442337812109}
-  m_Layer: 10
+  m_Layer: 22
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5383,7 +5383,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1369151349613506104}
   - component: {fileID: 9168494803532342638}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}

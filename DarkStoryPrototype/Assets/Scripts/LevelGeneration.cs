@@ -28,6 +28,8 @@ public class LevelGeneration : MonoBehaviour
     [SerializeField] private float minY;
     [HideInInspector] public bool stopGeneration;
 
+    private bool startGenerating = false;
+
 
     void Start()
     {
@@ -36,18 +38,22 @@ public class LevelGeneration : MonoBehaviour
         Instantiate(roomStart, transform.position, Quaternion.identity);
 
         direction = Random.Range(1, 6);
+        startGenerating = true;
     }
 
     private void Update()
     {
-        if(timeBtwRoom <= 0 && !stopGeneration)
+        if (startGenerating)
         {
-            Move();
-            timeBtwRoom = startTimeBtwRoom;
-        }
-        else
-        {
-            timeBtwRoom -= Time.deltaTime;
+            if (timeBtwRoom <= 0 && !stopGeneration)
+            {
+                Move();
+                timeBtwRoom = startTimeBtwRoom;
+            }
+            else
+            {
+                timeBtwRoom -= Time.deltaTime;
+            }
         }
     }
 
@@ -120,7 +126,7 @@ public class LevelGeneration : MonoBehaviour
             if(transform.position.x < maxX) 
             {
                 Collider2D roomDetection = Physics2D.OverlapCircle(transform.position, 1, roomLayer);
-                if(roomDetection.GetComponent<RoomType>().type != 2 && roomDetection.GetComponent<RoomType>().type != 3)
+                if(roomDetection.GetComponent<RoomType>().type != 2 && roomDetection.GetComponent<RoomType>().type != 3 && roomDetection.GetComponent<RoomType>().type != 4)
                 {
                     if (rightCounter >= 2)
                     {
