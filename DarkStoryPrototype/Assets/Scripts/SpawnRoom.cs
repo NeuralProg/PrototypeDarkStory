@@ -37,8 +37,8 @@ public class SpawnRoom : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         Collider2D roomDetectionCurrent = Physics2D.OverlapCircle(new Vector3(transform.position.x, transform.position.y, transform.position.z), 1, roomLayer);
-        Collider2D roomDetectionLeft = Physics2D.OverlapCircle(new Vector3(transform.position.x - 10f, transform.position.y, transform.position.z), 1, roomLayer);
-        Collider2D roomDetectionRight = Physics2D.OverlapCircle(new Vector3(transform.position.x + 10f, transform.position.y, transform.position.z), 1, roomLayer);
+        Collider2D roomDetectionLeft = Physics2D.OverlapCircle(new Vector3(transform.position.x - 20f, transform.position.y, transform.position.z), 1, roomLayer);
+        Collider2D roomDetectionRight = Physics2D.OverlapCircle(new Vector3(transform.position.x + 20f, transform.position.y, transform.position.z), 1, roomLayer);
         Collider2D roomDetectionTop = Physics2D.OverlapCircle(new Vector3(transform.position.x, transform.position.y + 10f, transform.position.z), 1, roomLayer);
         Collider2D roomDetectionBot = Physics2D.OverlapCircle(new Vector3(transform.position.x, transform.position.y - 10f, transform.position.z), 1, roomLayer);
         if ( (roomDetectionLeft.GetComponent<RoomType>().type == 0 || roomDetectionLeft.GetComponent<RoomType>().type == 1 || roomDetectionLeft.GetComponent<RoomType>().type == 4)

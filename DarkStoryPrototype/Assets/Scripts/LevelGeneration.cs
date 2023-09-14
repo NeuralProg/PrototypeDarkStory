@@ -18,7 +18,7 @@ public class LevelGeneration : MonoBehaviour
     public GameObject player;
     private Vector3 playerSpawnPos;
 
-    private float moveAmount = 10f;
+    private float moveAmount = 20f;
     private int direction;
 
     private float timeBtwRoom;
@@ -75,7 +75,7 @@ public class LevelGeneration : MonoBehaviour
             {
                 rightCounter = 0;
 
-                Vector2 newPos = new Vector2(transform.position.x, transform.position.y + moveAmount);
+                Vector2 newPos = new Vector2(transform.position.x, transform.position.y + moveAmount / 2);
                 transform.position = newPos;
 
                 int rand = Random.Range(0, 4);
@@ -109,7 +109,7 @@ public class LevelGeneration : MonoBehaviour
             {
                 rightCounter = 0;
 
-                Vector2 newPos = new Vector2(transform.position.x, transform.position.y - moveAmount);
+                Vector2 newPos = new Vector2(transform.position.x, transform.position.y - moveAmount / 2);
                 transform.position = newPos;
 
                 int rand = Random.Range(0, 4);
