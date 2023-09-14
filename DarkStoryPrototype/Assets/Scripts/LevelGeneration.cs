@@ -11,6 +11,8 @@ public class LevelGeneration : MonoBehaviour
     public GameObject[] TBL;
     public GameObject[] TBR;
     public GameObject[] TBLR;
+    public GameObject[] LR;
+    public GameObject[] LRT;
     public GameObject roomStart;
     public GameObject roomEnd;
     public GameObject player;
@@ -28,8 +30,8 @@ public class LevelGeneration : MonoBehaviour
     [SerializeField] private float maxX;
     [SerializeField] private float maxY;
     [SerializeField] private float minY;
-    [HideInInspector] public bool stopGeneration;
 
+    [HideInInspector] public bool stopGeneration;
     private bool startGenerating = false;
 
 
@@ -45,7 +47,7 @@ public class LevelGeneration : MonoBehaviour
         transform.position = newPos;
         Instantiate(TBR[Random.Range(0, TBR.Length)], transform.position, Quaternion.identity);*/
 
-        direction = Random.Range(1, 6);
+        direction = Random.Range(1, 7);
         startGenerating = true;
     }
 
@@ -86,7 +88,7 @@ public class LevelGeneration : MonoBehaviour
                 else if (rand == 3)
                     Instantiate(TBLR[Random.Range(0, TBLR.Length)], transform.position, Quaternion.identity);
 
-                direction = Random.Range(1, 6);
+                direction = Random.Range(1, 7);
                 if(direction == 3) 
                 { 
                     direction = 2;
@@ -120,26 +122,32 @@ public class LevelGeneration : MonoBehaviour
                 else if (rand == 3)
                     Instantiate(TBLR[Random.Range(0, TBLR.Length)], transform.position, Quaternion.identity);
 
-                direction = Random.Range(3, 6);
+                direction = Random.Range(3, 7);
             }
             else
             {
                 direction = 5;
             }
         }
-        else if (direction == 5) // Move right
+        else if (direction == 5 || direction == 6) // Move right
         {
             rightCounter++;
 
             if(transform.position.x < maxX) 
             {
                 Collider2D roomDetection = Physics2D.OverlapCircle(transform.position, 1, roomLayer);
-                if(roomDetection.GetComponent<RoomType>().type != 2 && roomDetection.GetComponent<RoomType>().type != 3 && roomDetection.GetComponent<RoomType>().type != 4)
+                if(roomDetection.GetComponent<RoomType>().type != 2 && roomDetection.GetComponent<RoomType>().type != 3 && roomDetection.GetComponent<RoomType>().type != 10)
                 {
                     if (rightCounter >= 2)
                     {
                         roomDetection.GetComponent<RoomType>().RoomDestruction();
-                        Instantiate(TBLR[Random.Range(0, TBLR.Length)], transform.position, Quaternion.identity);
+                        int randSpawn = Random.Range(0, 3);
+                        if(randSpawn == 0)
+                            Instantiate(TBLR[Random.Range(0, TBLR.Length)], transform.position, Quaternion.identity);
+                        else if (randSpawn == 1)
+                            Instantiate(LR[Random.Range(0, LR.Length)], transform.position, Quaternion.identity);
+                        else if (randSpawn == 2)
+                            Instantiate(LRT[Random.Range(0, LRT.Length)], transform.position, Quaternion.identity);
                     }
                     else
                     {
@@ -162,7 +170,7 @@ public class LevelGeneration : MonoBehaviour
                 else if (rand == 3 || rand == 2)
                     Instantiate(TBLR[Random.Range(0, TBLR.Length)], transform.position, Quaternion.identity);
 
-                direction = Random.Range(1, 6);
+                direction = Random.Range(1, 7);
             }
             else
             {

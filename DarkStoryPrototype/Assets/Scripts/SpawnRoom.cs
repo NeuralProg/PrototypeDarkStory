@@ -11,7 +11,7 @@ public class SpawnRoom : MonoBehaviour
 
     void Update()
     {
-        Collider2D roomDetection = Physics2D.OverlapCircle(transform.position, 1, roomLayer);
+        Collider2D roomDetection = Physics2D.OverlapCircle(transform.position, 1, roomLayer);  
         if(roomDetection == null && levelGen.stopGeneration)
         {
             int rand = Random.Range(0, 6);
@@ -25,7 +25,29 @@ public class SpawnRoom : MonoBehaviour
                 Instantiate(levelGen.TBLR[Random.Range(0, levelGen.TBLR.Length)], transform.position, Quaternion.identity);
             else if (rand == 4 || rand == 5)
                 Instantiate(blank, transform.position, Quaternion.identity);
+
             Destroy(gameObject);
+            //StartCoroutine(CorrectGeneration());
         }
+
+    }
+
+    private IEnumerator CorrectGeneration()
+    {
+        yield return new WaitForSeconds(2f);
+
+        Collider2D roomDetectionCurrent = Physics2D.OverlapCircle(new Vector3(transform.position.x, transform.position.y, transform.position.z), 1, roomLayer);
+        Collider2D roomDetectionLeft = Physics2D.OverlapCircle(new Vector3(transform.position.x - 10f, transform.position.y, transform.position.z), 1, roomLayer);
+        Collider2D roomDetectionRight = Physics2D.OverlapCircle(new Vector3(transform.position.x + 10f, transform.position.y, transform.position.z), 1, roomLayer);
+        Collider2D roomDetectionTop = Physics2D.OverlapCircle(new Vector3(transform.position.x, transform.position.y + 10f, transform.position.z), 1, roomLayer);
+        Collider2D roomDetectionBot = Physics2D.OverlapCircle(new Vector3(transform.position.x, transform.position.y - 10f, transform.position.z), 1, roomLayer);
+        if ( (roomDetectionLeft.GetComponent<RoomType>().type == 0 || roomDetectionLeft.GetComponent<RoomType>().type == 1 || roomDetectionLeft.GetComponent<RoomType>().type == 4)
+            && (roomDetectionRight.GetComponent<RoomType>().type == 0 || roomDetectionRight.GetComponent<RoomType>().type == 2 || roomDetectionRight.GetComponent<RoomType>().type == 4)
+            && (roomDetectionTop.GetComponent<RoomType>().type == 4)  && (roomDetectionBot.GetComponent<RoomType>().type == 4))
+        {
+            Instantiate(blank, transform.position, Quaternion.identity);
+        }
+
+        Destroy(gameObject);
     }
 }
