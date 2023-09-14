@@ -13,6 +13,8 @@ public class LevelGeneration : MonoBehaviour
     public GameObject[] TBLR;
     public GameObject roomStart;
     public GameObject roomEnd;
+    public GameObject player;
+    private Vector3 playerSpawnPos;
 
     private float moveAmount = 10f;
     private int direction;
@@ -35,7 +37,13 @@ public class LevelGeneration : MonoBehaviour
     {
         int randStartingPos = Random.Range(0, startingPositions.Length);
         transform.position = startingPositions[randStartingPos].position;
+
         Instantiate(roomStart, transform.position, Quaternion.identity);
+        playerSpawnPos = new Vector3(transform.position.x - 2f, transform.position.y - 0.5f, transform.position.z);
+
+        /*Vector2 newPos = new Vector2(transform.position.x, transform.position.y + moveAmount);
+        transform.position = newPos;
+        Instantiate(TBR[Random.Range(0, TBR.Length)], transform.position, Quaternion.identity);*/
 
         direction = Random.Range(1, 6);
         startGenerating = true;
@@ -160,6 +168,7 @@ public class LevelGeneration : MonoBehaviour
             {
                 stopGeneration = true;
                 Instantiate(roomEnd, transform.position, Quaternion.identity);
+                Instantiate(player, playerSpawnPos, Quaternion.identity);
                 return;
             }
         }

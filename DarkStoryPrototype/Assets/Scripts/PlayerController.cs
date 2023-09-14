@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 using TMPro.EditorUtilities;
 using Unity.Burst.Intrinsics;
@@ -242,6 +243,11 @@ public class PlayerController : MonoBehaviour
         foreach (Collider2D room in mapCollisionDetected)
         { 
             room.gameObject.transform.GetChild(0).gameObject.transform.GetChild(room.gameObject.transform.GetChild(0).gameObject.transform.childCount - 1).gameObject.layer = LayerMask.NameToLayer("Map"); ;
+        }
+        var mapCollisionDetectedEntered = Physics2D.OverlapBoxAll(mapCollisionCheckPos.position, new Vector2(0.3f, 0.3f), 0, mapLayer);
+        foreach (Collider2D roomEntered in mapCollisionDetectedEntered)
+        {
+            roomEntered.gameObject.transform.GetChild(0).gameObject.transform.GetChild(roomEntered.gameObject.transform.GetChild(0).gameObject.transform.childCount - 1).gameObject.GetComponent<Tilemap>().color = new Color(0.5f, 0.5f, 0.5f, 1);
         }
 
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -20, 20));    // Limit the max Y speed
