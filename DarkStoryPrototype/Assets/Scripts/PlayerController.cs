@@ -233,10 +233,9 @@ public class PlayerController : MonoBehaviour
         {
             regenTimer -= Time.deltaTime;
         }
-        else if(!dead)
+        else if(!dead && currentHealth != maxHealth)
         {
             currentHealth = maxHealth;
-            print("Health reset");
         }
 
         var mapCollisionDetected = Physics2D.OverlapBoxAll(mapCollisionCheckPos.position, mapCollisionCheckSize, 0, mapLayer);
@@ -268,8 +267,8 @@ public class PlayerController : MonoBehaviour
                            !Physics2D.Raycast(transform.position + innerRaycastOffset, Vector2.up, topRaycastLength, groundMask) ||
                            Physics2D.Raycast(transform.position - edgeRaycast0ffset, Vector2.up, topRaycastLength, groundMask) &&
                            !Physics2D.Raycast(transform.position - innerRaycastOffset, Vector2.up, topRaycastLength, groundMask)) && (isJumping || wallJumping);
-        if (canCornerCorrect)
-            CornerCorrect(rb.velocity.y);       
+        //if (canCornerCorrect)
+            //CornerCorrect(rb.velocity.y);       
     }
 
     private void OnEnable()
