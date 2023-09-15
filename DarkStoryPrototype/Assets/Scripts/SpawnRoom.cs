@@ -7,12 +7,13 @@ public class SpawnRoom : MonoBehaviour
     [SerializeField] LayerMask roomLayer;
     [SerializeField] private LevelGeneration levelGen;
     [SerializeField] private GameObject blank;
+    private bool stop;
 
 
     void Update()
     {
         Collider2D roomDetection = Physics2D.OverlapCircle(transform.position, 1, roomLayer);  
-        if(roomDetection == null && levelGen.stopGeneration)
+        if(roomDetection == null && levelGen.stopGeneration && !stop)
         {
             int rand = Random.Range(0, 6);
             if (rand == 0)
@@ -26,7 +27,9 @@ public class SpawnRoom : MonoBehaviour
             else if (rand == 4 || rand == 5)
                 Instantiate(blank, transform.position, Quaternion.identity);
 
-            StartCoroutine(CorrectGeneration());
+            stop = true;
+            Destroy(gameObject);
+            //StartCoroutine(CorrectGeneration());
         }
 
     }
