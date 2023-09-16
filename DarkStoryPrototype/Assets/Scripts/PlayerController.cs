@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("Checks")]
     [SerializeField] private Transform groundPos;
+    [SerializeField] private Transform fallingAnimErrorPos;
+    [SerializeField] private Vector2 fallingAnimErrorSize;
     [SerializeField] private LayerMask groundMask;
     private bool isGrounded;
     private bool isFalling;
@@ -249,13 +251,15 @@ public class PlayerController : MonoBehaviour
             roomEntered.gameObject.transform.GetChild(0).gameObject.transform.GetChild(roomEntered.gameObject.transform.GetChild(0).gameObject.transform.childCount - 1).gameObject.GetComponent<Tilemap>().color = new Color(0.5f, 0.5f, 0.5f, 1);
         }
 
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -20, 20));    // Limit the max Y speed
+        rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -20, 20));    // Limit the max Y speed
         anim = GetComponentInChildren<Animator>();
 
         // Set the parameters of the animator
         anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));   
         anim.SetBool("Grounded", isGrounded);
+
         anim.SetBool("Falling", isFalling);
+
         anim.SetBool("WallSliding", isWalled);
         anim.SetBool("Jumping", (isJumping || wallJumping));
     }
@@ -288,7 +292,7 @@ public class PlayerController : MonoBehaviour
     private void Checks()
     {
         isGrounded = Physics2D.OverlapBox(groundPos.position, new Vector2(0.4f, 0.25f), 0f, groundMask);
-        isFalling = rb.velocity.y < 0 && !isGrounded;
+        isFalling = (rb.velocity.y < 0 && !isGrounded) && (!Physics2D.OverlapBox(fallingAnimErrorPos.position, fallingAnimErrorSize, 0, groundMask) || rb.velocity.y < -15f);
 
         if (isFalling && rb.velocity.y < -19f)
             shouldPlayLandEffect = true;
@@ -693,7 +697,7 @@ public class PlayerController : MonoBehaviour
         bool ledgeInCollision = Physics2D.OverlapBox(ledgeDetectionInBot.position, new Vector2(0.08f, 0.15f), 0, ledgeLayers) || Physics2D.OverlapBox(ledgeDetectionInTop.position, new Vector2(0.08f, 0.15f), 0, ledgeLayers);
         bool ledgeOutNotCollision = !Physics2D.OverlapBox(ledgeDetectionOut.position, new Vector2(0.08f, 0.2f), 0, ledgeLayers);
 
-        if(Physics2D.OverlapBox(ledgeDetectionInBot.position, new Vector2(0.08f, 0.15f), 0, ledgeLayers) && Physics2D.OverlapBox(ledgeDetectionInTop.position, new Vector2(0.08f, 0.15f), 0, ledgeLayers))
+        if(Physics2D.OverlapBox(ledgeDetectionInBot.position, new Vector2(0.08f, 0.15f), 0, ledgeLayers) && Physics2D.OverlapBox(ledgeDetectionInTop.position, new Vector2(0.08f, 0.15f), 0, ledgeLayers) && isOnLedge)
         {
             ledgeSprite.transform.localPosition = defaultLedgeSpritePosition + ledgeClimbErrorOffset;
         }
@@ -705,10 +709,18 @@ public class PlayerController : MonoBehaviour
         if (ledgeGrabCooldownTimer < 0 && ledgeInCollision && ledgeOutNotCollision && (isFalling || isOnLedge))
         {
             isOnLedge = true;
+            ledgeSprite.SetActive(true);
+            defaultSprite.SetActive(false);
+            anim = GetComponentInChildren<Animator>();
+            anim.SetBool("OnLedge", isOnLedge);
         }
         else
         {
             isOnLedge = false;
+            ledgeSprite.SetActive(false);
+            defaultSprite.SetActive(true);
+            anim = GetComponentInChildren<Animator>();
+            anim.SetBool("OnLedge", isOnLedge);
         }
 
         if (isOnLedge)
@@ -717,6 +729,9 @@ public class PlayerController : MonoBehaviour
             rb.gravityScale = 0f;
             ledgeSprite.SetActive(true);
             defaultSprite.SetActive(false);
+
+            canDash = true;
+            shouldPlayLandEffect = false;
         }
         else
         {
