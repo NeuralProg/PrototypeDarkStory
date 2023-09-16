@@ -175,6 +175,11 @@ public class LevelGeneration : MonoBehaviour
             else
             {
                 stopGeneration = true;
+
+                Collider2D roomDetection = Physics2D.OverlapCircle(transform.position, 1, roomLayer);
+                if(roomDetection != null)
+                    roomDetection.GetComponent<RoomType>().RoomDestruction();
+
                 Instantiate(roomEnd, transform.position, Quaternion.identity);
                 Instantiate(player, playerSpawnPos, Quaternion.identity);
                 return;

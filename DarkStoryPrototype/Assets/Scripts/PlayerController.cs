@@ -240,8 +240,8 @@ public class PlayerController : MonoBehaviour
 
         var mapCollisionDetected = Physics2D.OverlapBoxAll(mapCollisionCheckPos.position, mapCollisionCheckSize, 0, mapLayer);
         foreach (Collider2D room in mapCollisionDetected)
-        { 
-            room.gameObject.transform.GetChild(0).gameObject.transform.GetChild(room.gameObject.transform.GetChild(0).gameObject.transform.childCount - 1).gameObject.layer = LayerMask.NameToLayer("Map"); ;
+        {
+            room.gameObject.transform.GetChild(0).gameObject.transform.GetChild(room.gameObject.transform.GetChild(0).gameObject.transform.childCount - 1).gameObject.layer = LayerMask.NameToLayer("Map");
         }
         var mapCollisionDetectedEntered = Physics2D.OverlapBoxAll(mapCollisionCheckPos.position, new Vector2(0.3f, 0.3f), 0, mapLayer);
         foreach (Collider2D roomEntered in mapCollisionDetectedEntered)
