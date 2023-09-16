@@ -996,7 +996,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 15, y: 15}
+  m_Size: {x: 25, y: 15}
   m_EdgeRadius: 0
 --- !u!1 &1764059839361217357
 GameObject:
@@ -1538,7 +1538,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   mapCollisionCheckPos: {fileID: 1764059839331971578}
-  mapCollisionCheckSize: {x: 15, y: 15}
+  mapCollisionCheckSize: {x: 25, y: 15}
   mapLayer:
     serializedVersion: 2
     m_Bits: 4194304
