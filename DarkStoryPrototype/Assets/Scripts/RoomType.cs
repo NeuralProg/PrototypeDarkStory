@@ -5,6 +5,7 @@ using UnityEngine;
 public class RoomType : MonoBehaviour
 {
     public int type;
+    public bool isShop = false;
 
     public void RoomDestruction()
     {
