@@ -609,7 +609,7 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("RollAttack");
         if (combo)
-            StartCoroutine(PerformAttack(rollAttackPos, rollAttackSize, 0.22f / 0.6f, 0.04f / 0.6f, 0.5f, true, 0)); // no combo allowed time
+            StartCoroutine(PerformAttack(rollAttackPos, rollAttackSize, 0.22f / 0.6f, 0.04f / 0.6f, 0.25f, true, 0)); // no combo allowed time
         else
         {
             StartCoroutine(PerformAttack(rollAttackPos, rollAttackSize, 0.22f / 0.6f, 0.04f / 0.6f, 0.3f));

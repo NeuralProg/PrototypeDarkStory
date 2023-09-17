@@ -46,7 +46,10 @@ namespace BehaviorDesigner.Runtime.Tasks
 
             finished = false;
 
-            player = PlayerController.instance;
+            if (PlayerController.instance != null)
+            {
+                player = PlayerController.instance;
+            }
             rb = GetComponent<Rigidbody2D>();
 
             if (shouldFinishOnDuration)
@@ -57,19 +60,26 @@ namespace BehaviorDesigner.Runtime.Tasks
 
         public override TaskStatus OnUpdate()
         {
-            DefineTargetedPoint();
-            Move();
-
-            if (Physics2D.OverlapCircle(frontCheck.position, frontCheckSize, obstaclesLayers))
-                finished = true;
-            
-            if (finished)
+            if (PlayerController.instance != null)
             {
-                finished = false;
-                return TaskStatus.Success;
+                DefineTargetedPoint();
+                Move();
+
+                if (Physics2D.OverlapCircle(frontCheck.position, frontCheckSize, obstaclesLayers))
+                    finished = true;
+
+                if (finished)
+                {
+                    finished = false;
+                    return TaskStatus.Success;
+                }
+                else
+                    return TaskStatus.Running;
             }
             else
-                return TaskStatus.Running;
+            {
+                return TaskStatus.Success;
+            }
         }
 
         #endregion
@@ -82,6 +92,7 @@ namespace BehaviorDesigner.Runtime.Tasks
             float direction = (currentTargetedPoint.x - transform.position.x) / Mathf.Abs(currentTargetedPoint.x - transform.position.x);
             if (!GetComponent<Enemy>().isKnockbacking)
             {
+                Debug.Log(direction);
                 if(!shouldChasePlayer)
                     rb.velocity = new UnityEngine.Vector2(moveSpeed * direction, rb.velocity.y);     // move to target
                 else if (currentTargetedPoint.x - transform.position.x > 0.3f || currentTargetedPoint.x - transform.position.x < -0.3f)

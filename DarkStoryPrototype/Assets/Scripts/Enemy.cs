@@ -42,6 +42,7 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer sr;
     private Rigidbody2D rb;
     private Animator anim;
+    private PlayerController player;
 
     #endregion
 
@@ -59,10 +60,15 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        player = PlayerController.instance;
+
         HandleKnockback();
 
-        if (PlayerController.instance.dead)
-            playerDetected = false;
+        if (player != null)
+        {
+            if (player.dead)
+                playerDetected = false;
+        }
 
         if(damagedParticlesObject != null)
         {
@@ -90,6 +96,8 @@ public class Enemy : MonoBehaviour
         }
 
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -20, 20));    // Limit the max Y speed
+
+        print(Mathf.Abs(rb.velocity.x));
         anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
 
         if (!isKnockbacking)
@@ -115,13 +123,13 @@ public class Enemy : MonoBehaviour
         }
 
         // Apply knockback
-        knockbackDirection = new Vector2(centerPoint.position.x - PlayerController.instance.centerPoint.position.x, centerPoint.position.y - PlayerController.instance.centerPoint.position.y).normalized;
+        knockbackDirection = new Vector2(centerPoint.position.x - player.centerPoint.position.x, centerPoint.position.y - player.centerPoint.position.y).normalized;
         StartCoroutine(KnockbackTime());
     }
 
     public void DealDamageToPlayer(int damageAmount, bool isTouchDamage = false)
     {
-        PlayerController.instance.TakeDamage(centerPoint.position, damageAmount, isTouchDamage);
+        player.TakeDamage(centerPoint.position, damageAmount, isTouchDamage);
     }
 
     private IEnumerator Die()
