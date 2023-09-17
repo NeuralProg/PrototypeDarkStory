@@ -725,6 +725,7 @@ public class PlayerController : MonoBehaviour
 
         if (isOnLedge)
         {
+            isWalled = false;
             rb.velocity = new Vector2(rb.velocity.x, 0f);
             rb.gravityScale = 0f;
             ledgeSprite.SetActive(true);
