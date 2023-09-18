@@ -97,7 +97,7 @@ public class Enemy : MonoBehaviour
 
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -20, 20));    // Limit the max Y speed
 
-        print(Mathf.Abs(rb.velocity.x));
+        print(Mathf.Abs(rb.velocity.x) + gameObject.transform.parent.gameObject.transform.parent.gameObject.name);
         anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
 
         if (!isKnockbacking)

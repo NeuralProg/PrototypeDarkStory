@@ -92,7 +92,6 @@ namespace BehaviorDesigner.Runtime.Tasks
             float direction = (currentTargetedPoint.x - transform.position.x) / Mathf.Abs(currentTargetedPoint.x - transform.position.x);
             if (!GetComponent<Enemy>().isKnockbacking)
             {
-                Debug.Log(direction);
                 if(!shouldChasePlayer)
                     rb.velocity = new UnityEngine.Vector2(moveSpeed * direction, rb.velocity.y);     // move to target
                 else if (currentTargetedPoint.x - transform.position.x > 0.3f || currentTargetedPoint.x - transform.position.x < -0.3f)
