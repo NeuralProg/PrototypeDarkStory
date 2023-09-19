@@ -88,7 +88,7 @@ Transform:
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3817982659163019875}
+  m_Father: {fileID: 7405082539789221032}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1764059838145584381
@@ -192,7 +192,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1764059838963715661}
-  m_Father: {fileID: 3817982659163019875}
+  m_Father: {fileID: 7405082539789221032}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1764059838397416264
@@ -345,7 +345,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3817982659163019875}
+  m_Father: {fileID: 7405082539789221032}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &1764059838549180153
@@ -900,7 +900,7 @@ Transform:
   - {fileID: 1764059838958443006}
   - {fileID: 1764059839248490525}
   - {fileID: 1764059839331971578}
-  m_Father: {fileID: 3817982659163019875}
+  m_Father: {fileID: 7405082539789221032}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1764059839248490524
@@ -1085,7 +1085,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3817982659163019875}
+  m_Father: {fileID: 7405082539789221032}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1764059839603118031
@@ -1119,7 +1119,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1764059838397416265}
-  m_Father: {fileID: 3817982659163019875}
+  m_Father: {fileID: 7405082539789221032}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1764059839603118029
@@ -1508,11 +1508,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3817982659163019875}
-  - component: {fileID: 3817982659163019876}
-  - component: {fileID: 3817982659163019877}
-  - component: {fileID: 3817982659163019878}
-  - component: {fileID: 3817982659163019879}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1527,139 +1523,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3817982659163019864}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -35.715553, y: -19.708881, z: 0.057683945}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1764059838145584378}
-  - {fileID: 1764059839603118026}
-  - {fileID: 1764059839182474101}
-  - {fileID: 1764059839560311680}
-  - {fileID: 1764059838549180150}
-  - {fileID: 1764059838312927780}
   - {fileID: 2462982171675855541}
+  - {fileID: 7405082539789221032}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3817982659163019876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3817982659163019864}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 870796fdabd5e4350a471ea744045fbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canMove: 1
-  moveSpeed: 6
-  maxHealth: 5
-  currentHealth: 0
-  dead: 0
-  attackDamages: 1
-  groundPos: {fileID: 1764059839002778967}
-  fallingAnimErrorPos: {fileID: 901645382701382718}
-  fallingAnimErrorSize: {x: 0.3, y: 1.2}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 7168
-  topRaycastLength: 1
-  edgeRaycast0ffset: {x: 0.25, y: 0, z: 0}
-  innerRaycastOffset: {x: 0.05, y: 0, z: 0}
-  attackables:
-    serializedVersion: 2
-    m_Bits: 384
-  slash1Pos: {fileID: 1764059838747338761}
-  slash1Size: {x: 2.75, y: 0.5}
-  slash2Pos: {fileID: 1764059838428855956}
-  slash2Size: {x: 2.95, y: 0.6}
-  spinAttackPos: {fileID: 1764059839361217354}
-  spinAttackSize: {x: 3.4, y: 0.65}
-  rollAttackPos: {fileID: 1764059839832306369}
-  rollAttackSize: {x: 1.66, y: 1.18}
-  slamAttackPos: {fileID: 1764059838870573053}
-  slamAttackSize: {x: 2.2, y: 1.5}
-  fallAttackPos: {fileID: 1764059838670165895}
-  fallAttackSize: {x: 0.8, y: 1.21}
-  pogoPoint: {fileID: 1764059838492187742}
-  pogoSlashEffect: {fileID: 3521671826601994075, guid: 59747f74adabe864395e54639c8d9922, type: 3}
-  ledgeDetectionInTop: {fileID: 1764059839672648864}
-  ledgeDetectionInBot: {fileID: 1764059839126259076}
-  ledgeClimbErrorOffset: {x: 0, y: 0.2, z: 0}
-  ledgeDetectionOut: {fileID: 1764059839814894225}
-  ledgeLayers:
-    serializedVersion: 2
-    m_Bits: 3072
-  ledgeClimbingPoint: {fileID: 1764059838397416265}
-  wallCheckFront: {fileID: 1764059838910766657}
-  wallCheckBack: {fileID: 1764059838033859712}
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 2048
-  mapCollisionCheckPos: {fileID: 1764059839331971578}
-  mapCollisionCheckSize: {x: 25, y: 15}
-  mapLayer:
-    serializedVersion: 2
-    m_Bits: 4194304
-  centerPoint: {fileID: 1764059839560311680}
-  defaultSprite: {fileID: 1764059838145584383}
-  ledgeSprite: {fileID: 1764059839603118031}
---- !u!70 &3817982659163019877
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3817982659163019864}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: 63ea498ca698c4389b2a3524acf96b63, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.16083461}
-  m_Size: {x: 0.43891203, y: 0.9133023}
-  m_Direction: 0
---- !u!50 &3817982659163019878
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3817982659163019864}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 5
-  m_Material: {fileID: 6200000, guid: 63ea498ca698c4389b2a3524acf96b63, type: 2}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
---- !u!114 &3817982659163019879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3817982659163019864}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de2eeb848c17dcb4e8bb62aded40f6d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  day: 0
-  stop: 0
-  timeRatio: 1
-  clockMinuteHandTransform: {fileID: 4822358579486989007}
-  clockSecondHandTransform: {fileID: 1337239023893421472}
 --- !u!1 &3949768431102781855
 GameObject:
   m_ObjectHideFlags: 0
@@ -1924,7 +1796,7 @@ RectTransform:
   - {fileID: 4822358579486989007}
   - {fileID: 6193300655409966067}
   m_Father: {fileID: 3817982659163019875}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1992,3 +1864,163 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!1 &7405082539789221011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7405082539789221032}
+  - component: {fileID: 7405082539789221039}
+  - component: {fileID: 7405082539789221038}
+  - component: {fileID: 7405082539789221037}
+  - component: {fileID: 7405082539789221036}
+  m_Layer: 6
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7405082539789221032
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7405082539789221011}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1764059838145584378}
+  - {fileID: 1764059839603118026}
+  - {fileID: 1764059839182474101}
+  - {fileID: 1764059839560311680}
+  - {fileID: 1764059838549180150}
+  - {fileID: 1764059838312927780}
+  m_Father: {fileID: 3817982659163019875}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7405082539789221039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7405082539789221011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 870796fdabd5e4350a471ea744045fbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canMove: 1
+  moveSpeed: 6
+  maxHealth: 5
+  currentHealth: 0
+  dead: 0
+  attackDamages: 1
+  groundPos: {fileID: 1764059839002778967}
+  fallingAnimErrorPos: {fileID: 901645382701382718}
+  fallingAnimErrorSize: {x: 0.3, y: 1.2}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 7168
+  topRaycastLength: 1
+  edgeRaycast0ffset: {x: 0.25, y: 0, z: 0}
+  innerRaycastOffset: {x: 0.05, y: 0, z: 0}
+  attackables:
+    serializedVersion: 2
+    m_Bits: 384
+  slash1Pos: {fileID: 1764059838747338761}
+  slash1Size: {x: 2.75, y: 0.5}
+  slash2Pos: {fileID: 1764059838428855956}
+  slash2Size: {x: 2.95, y: 0.6}
+  spinAttackPos: {fileID: 1764059839361217354}
+  spinAttackSize: {x: 3.4, y: 0.65}
+  rollAttackPos: {fileID: 1764059839832306369}
+  rollAttackSize: {x: 1.66, y: 1.18}
+  slamAttackPos: {fileID: 1764059838870573053}
+  slamAttackSize: {x: 2.2, y: 1.5}
+  fallAttackPos: {fileID: 1764059838670165895}
+  fallAttackSize: {x: 0.8, y: 1.21}
+  pogoPoint: {fileID: 1764059838492187742}
+  pogoSlashEffect: {fileID: 3521671826601994075, guid: 59747f74adabe864395e54639c8d9922, type: 3}
+  ledgeDetectionInTop: {fileID: 1764059839672648864}
+  ledgeDetectionInBot: {fileID: 1764059839126259076}
+  ledgeClimbErrorOffset: {x: 0, y: 0.2, z: 0}
+  ledgeDetectionOut: {fileID: 1764059839814894225}
+  ledgeLayers:
+    serializedVersion: 2
+    m_Bits: 3072
+  ledgeClimbingPoint: {fileID: 1764059838397416265}
+  wallCheckFront: {fileID: 1764059838910766657}
+  wallCheckBack: {fileID: 1764059838033859712}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  mapCollisionCheckPos: {fileID: 1764059839331971578}
+  mapCollisionCheckSize: {x: 25, y: 15}
+  mapLayer:
+    serializedVersion: 2
+    m_Bits: 4194304
+  centerPoint: {fileID: 1764059839560311680}
+  defaultSprite: {fileID: 1764059838145584383}
+  ledgeSprite: {fileID: 1764059839603118031}
+--- !u!70 &7405082539789221038
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7405082539789221011}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 63ea498ca698c4389b2a3524acf96b63, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.16083461}
+  m_Size: {x: 0.43891203, y: 0.9133023}
+  m_Direction: 0
+--- !u!50 &7405082539789221037
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7405082539789221011}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 5
+  m_Material: {fileID: 6200000, guid: 63ea498ca698c4389b2a3524acf96b63, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
+--- !u!114 &7405082539789221036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7405082539789221011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de2eeb848c17dcb4e8bb62aded40f6d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  day: 0
+  stop: 0
+  timeRatio: 1
+  clockMinuteHandTransform: {fileID: 4822358579486989007}
+  clockSecondHandTransform: {fileID: 1337239023893421472}
