@@ -15,15 +15,14 @@ public class RealTimeClock : MonoBehaviour
 
     private void Update()
     {
-        // Obtenir l'heure actuelle
+        // Grab the actual time
         System.DateTime currentTime = System.DateTime.Now;
 
-        // Calculer les angles des aiguilles
         float secondsAngle = (((currentTime.Second - 15) / SECONDS_PER_MINUTE) * 360f);
         float minutesAngle = (((currentTime.Minute - 15) + (currentTime.Second - 15) / SECONDS_PER_MINUTE) / MINUTES_PER_HOUR) * 360f;
         float hoursAngle = (((currentTime.Hour - 15) + (currentTime.Minute - 15) / MINUTES_PER_HOUR) / HOURS_PER_DAY) * 360f;
 
-        // Appliquer les rotations aux aiguilles
+        //  Rotation
         clockSecondHandTransform.localRotation = Quaternion.Euler(0f, 0f, -secondsAngle);
         clockMinuteHandTransform.localRotation = Quaternion.Euler(0f, 0f, -minutesAngle);
         clockHoursHandTransform.localRotation = Quaternion.Euler(0f, 0f, -hoursAngle);
