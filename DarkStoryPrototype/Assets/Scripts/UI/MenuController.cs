@@ -41,7 +41,7 @@ public class MenuController : MonoBehaviour
         }
     }
 
-    public void EXITBUTTON()
+    public void QuitButtonYes()
     {
         Application.Quit();
     }
