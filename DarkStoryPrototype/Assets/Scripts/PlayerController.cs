@@ -162,7 +162,7 @@ public class PlayerController : MonoBehaviour
         if (instance == null)        
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject.transform.parent);
         }
         else
         {
