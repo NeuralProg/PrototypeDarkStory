@@ -7,7 +7,8 @@ public class ParallaxScript : MonoBehaviour
     private float _startingPos; //This is starting position of the sprites.
     private float _lengthOfSprite;    //This is the length of the sprites.
     [SerializeField] private float AmountOfParallax;  //This is amount of parallax scroll. 
-    [SerializeField] private Camera MainCamera;   //Reference of the camera.
+    [SerializeField] private Transform MainCamera;   //Reference of the camera.
+    [SerializeField] private bool invertMovement = false;
 
 
     void Start()
@@ -20,12 +21,19 @@ public class ParallaxScript : MonoBehaviour
 
     void Update()
     {
-        Vector3 Position = MainCamera.transform.position;
+        Vector3 Position = MainCamera.position;
         float Temp = Position.x * (1 - AmountOfParallax);
         float Distance = Position.x * AmountOfParallax;
 
-        Vector3 NewPosition = new Vector3(_startingPos + Distance, transform.position.y, transform.position.z);
-
-        transform.position = NewPosition;
+        if (!invertMovement)
+        {
+            Vector3 NewPosition = new Vector3(_startingPos + Distance, transform.position.y, transform.position.z);
+            transform.position = NewPosition;
+        }
+        else
+        {
+            Vector3 NewPosition = new Vector3(-(_startingPos + Distance), transform.position.y, transform.position.z);
+            transform.position = NewPosition;
+        }
     }
 }
