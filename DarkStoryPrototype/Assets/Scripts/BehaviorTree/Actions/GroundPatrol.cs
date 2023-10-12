@@ -23,6 +23,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         [SerializeField] private bool shouldFinishOnArrived = false;
         [SerializeField] private bool shouldFinishOnDuration = false;
         [SerializeField] private float finishOnDurationTime = 0f;
+        [SerializeField] private float playerDeadZone = 0.3f;
         private bool finished = false;
 
         [Header("References")]
@@ -94,7 +95,7 @@ namespace BehaviorDesigner.Runtime.Tasks
             {
                 if(!shouldChasePlayer)
                     rb.velocity = new UnityEngine.Vector2(moveSpeed * direction, rb.velocity.y);     // move to target
-                else if (currentTargetedPoint.x - transform.position.x > 0.3f || currentTargetedPoint.x - transform.position.x < -0.3f)
+                else if (currentTargetedPoint.x - transform.position.x > playerDeadZone || currentTargetedPoint.x - transform.position.x < -playerDeadZone)
                     rb.velocity = new UnityEngine.Vector2(moveSpeed * direction, rb.velocity.y);     // move to target but leave a dead zone
             }
 

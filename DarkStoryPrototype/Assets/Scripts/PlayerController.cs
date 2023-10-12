@@ -10,7 +10,6 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     #region Variables
-
     // Instance
     public static PlayerController instance;
 

@@ -95,7 +95,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         #endregion
 
 
-        #region Functions
+         #region Functions
 
         private IEnumerator NormalAttack()
         {
