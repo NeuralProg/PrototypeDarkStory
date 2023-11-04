@@ -117,72 +117,72 @@ namespace BehaviorDesigner.Runtime.Tasks
             // Modify sprite pos
 
             yield return new WaitForSeconds(0.14f / 0.6f);
-            DealDamage(true);
+            DealDamage();
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage(true);
+            DealDamage();
             yield return new WaitForSeconds(0.005f / 0.6f); // 27/60
-            DealDamage(true);
+            DealDamage();
             yield return new WaitForSeconds(0.05f / 0.6f); // 32/60
 
             hasHitPlayer = false;
