@@ -16623,7 +16623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 969d1a21785114c42827d2b13118a705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AmountOfParallax: 0.025
+  AmountOfParallax: 0.01
   MainCamera: {fileID: 6047230962227281354}
   invertMovement: 1
 --- !u!1 &365522018
@@ -16971,7 +16971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 969d1a21785114c42827d2b13118a705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AmountOfParallax: 0.01
+  AmountOfParallax: 0.005
   MainCamera: {fileID: 6047230962227281354}
   invertMovement: 1
 --- !u!1 &469882925
@@ -17561,7 +17561,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1235712475}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.265, y: 42.897, z: 0}
+  m_LocalPosition: {x: 5.89, y: 41, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17605,12 +17605,12 @@ MonoBehaviour:
       startIndex: 
       variableStartIndex: 
       JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(453.842133,82.10727)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(-6.49667,156.005646)"},"ID":1,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":null,"Int32mValue":0},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(180.3628,141.0469)"},"ID":2,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.BloodKingAttack","NodeData":{"Offset":"(-40.22414,148.43103)"},"ID":3,"Name":"Blood
-        King Attack","Instant":true,"Int32attackType":1,"TransformdoubleSlashPos":0,"Vector2doubleSlashSize":"(1,1)","Vector2doubleSlashSize1":"(0,0)","Vector2doubleSlashSize2":"(0,0)","Vector2stabAndSpinSize":"(0,0)","Vector2stabAndSpinSize1":"(0,0)","Vector2canstabAndSpinSize":"(0,0)","Vector2bottomSlamSize":"(0,0)","Vector2bottomSlamSize1":"(0,0)","Vector2slamSize":"(0,0)","Vector2dodgeChargeSize":"(0,0)","Vector2dodgeChargeSize1":"(0,0)","Vector2canDodgeChargeSize":"(0,0)","Int32damages":1,"LayerMaskcancelAttacksLayers":3072,"Animatoranim":1,"SpriteRenderersr":2},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(99.24219,157.276245)"},"ID":4,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":2},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}}]}]},"DetachedTasks":[{"Type":"BehaviorDesigner.Runtime.Tasks.Log","NodeData":{"Offset":"(344.080566,794.6926)","Comment":"Start
+        King Attack","Instant":true,"Int32attackType":1,"TransformdoubleSlashPos":0,"Vector2doubleSlashSize":"(1.8,1.4)","TransformdoubleSlashPos1":1,"Vector2doubleSlashSize1":"(2,1.3)","TransformdoubleSlashPos2":2,"Vector2doubleSlashSize2":"(2,1.3)","Vector2stabAndSpinSize":"(0,0)","Vector2stabAndSpinSize1":"(0,0)","Vector2canstabAndSpinSize":"(0,0)","Vector2bottomSlamSize":"(0,0)","Vector2bottomSlamSize1":"(0,0)","Vector2slamSize":"(0,0)","Vector2dodgeChargeSize":"(0,0)","Vector2dodgeChargeSize1":"(0,0)","Vector2canDodgeChargeSize":"(0,0)","Int32damages":1,"LayerMaskcancelAttacksLayers":3072,"Animatoranim":3,"SpriteRenderersr":4},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(99.24219,157.276245)"},"ID":4,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":2},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}}]}]},"DetachedTasks":[{"Type":"BehaviorDesigner.Runtime.Tasks.Log","NodeData":{"Offset":"(344.080566,794.6926)","Comment":"Start
         combat anim (no movements player) than reduce hp"},"ID":5,"Name":"Log","Instant":true,"Disabled":true,"SharedStringtext":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":""},"SharedBoollogError":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedBoollogTime":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false}},{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(180,410)"},"ID":6,"Name":"Selector","Instant":true,"Disabled":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-645.858643,142.331421)"},"ID":7,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.CheckCurrentHealth","NodeData":{"Offset":"(-124.453125,143.57373)"},"ID":8,"Name":"Check
         Current Health","Instant":true,"BooleanhealthUnder":true,"BooleanhealthEqual":false,"BooleanhealthAbove":false,"Int32healthToCheck":1},{"Type":"BehaviorDesigner.Runtime.Tasks.StopMovement","NodeData":{"Offset":"(42.7915649,135.583008)"},"ID":9,"Name":"Stop
         Movement","Instant":true}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(27.7747231,140.066528)"},"ID":10,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.CheckPlayerDetected","NodeData":{"Offset":"(-287.897949,159.919464)"},"ID":11,"Name":"Check
         Player Detected","Instant":true,"SinglerangeToStartChaseX":6,"SinglerangeToStartChaseY":10,"BooleanshouldStillTrue":true,"BooleanshouldOnlyCheckDistance":false},{"Type":"BehaviorDesigner.Runtime.Tasks.GroundPatrol","NodeData":{"Offset":"(-130.96521,164.2276)"},"ID":12,"Name":"Ground
-        Patrol","Instant":true,"Transform[]waypoints":[],"SinglewaypointDistanceDetection":0.2,"BooleanshouldPatrolRandomly":false,"SinglemoveSpeed":3,"BooleanshouldChasePlayer":true,"BooleanshouldFinishOnArrived":false,"BooleanshouldFinishOnDuration":false,"SinglefinishOnDurationTime":0,"SingleplayerDeadZone":0.45,"TransformfrontCheck":3,"SinglefrontCheckSize":0.1,"LayerMaskobstaclesLayers":3328},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(24.0746212,157.036987)"},"ID":13,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":2},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(262.20282,119.973389)"},"ID":14,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(46.614296,130.264587)"},"ID":15,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":2},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}}]}]}]}'
+        Patrol","Instant":true,"Transform[]waypoints":[],"SinglewaypointDistanceDetection":0.2,"BooleanshouldPatrolRandomly":false,"SinglemoveSpeed":3,"BooleanshouldChasePlayer":true,"BooleanshouldFinishOnArrived":false,"BooleanshouldFinishOnDuration":false,"SinglefinishOnDurationTime":0,"SingleplayerDeadZone":0.45,"TransformfrontCheck":5,"SinglefrontCheckSize":0.1,"LayerMaskobstaclesLayers":3328},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(24.0746212,157.036987)"},"ID":13,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":2},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(262.20282,119.973389)"},"ID":14,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(46.614296,130.264587)"},"ID":15,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":2},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}}]}]}]}'
       fieldSerializationData:
         typeName: []
         fieldNameHash: 
@@ -17618,6 +17618,8 @@ MonoBehaviour:
         dataPosition: 
         unityObjects:
         - {fileID: 384072801}
+        - {fileID: 2127062632}
+        - {fileID: 150211563}
         - {fileID: 1769192499}
         - {fileID: 1769192497}
         - {fileID: 768759995}
@@ -19850,7 +19852,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 969d1a21785114c42827d2b13118a705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AmountOfParallax: 0.01
+  AmountOfParallax: 0.005
   MainCamera: {fileID: 6047230962227281354}
   invertMovement: 1
 --- !u!1 &1976837361

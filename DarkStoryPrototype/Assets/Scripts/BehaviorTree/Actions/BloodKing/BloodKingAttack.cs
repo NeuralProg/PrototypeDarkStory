@@ -115,147 +115,151 @@ namespace BehaviorDesigner.Runtime.Tasks
             anim.SetTrigger("DoubleSlash");
 
             // Modify sprite pos
+            yield return new WaitForSeconds(0.16f / 0.6f); // prep count (not counted)
 
-            yield return new WaitForSeconds(0.14f / 0.6f);
-            DealDamage();
-
-            yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            yield return new WaitForSeconds(0.14f / 0.6f); // 14
+            DealDamage(0);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
+            yield return new WaitForSeconds(0.005f / 0.6f); // 18
+            DealDamage(1);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(1);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(1);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(1);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(1);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(1);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(1);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(1);
+            yield return new WaitForSeconds(0.005f / 0.6f); // 22
+            DealDamage(1);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(1);
+            yield return new WaitForSeconds(0.005f / 0.6f); // 23
+            DealDamage(2);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(2);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(2);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(2);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(2);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.005f / 0.6f); // 27/60
-            DealDamage();
-            yield return new WaitForSeconds(0.05f / 0.6f); // 32/60
+            DealDamage(2);
+            yield return new WaitForSeconds(0.005f / 0.6f);
+            DealDamage(2);
 
+            yield return new WaitForSeconds(0.005f / 0.6f);
+            DealDamage(2);
+            yield return new WaitForSeconds(0.005f / 0.6f); // 27
+            DealDamage(2);
+            yield return new WaitForSeconds(0.005f / 0.6f); // 27.5
+            DealDamage(2);
+
+            yield return new WaitForSeconds(0.045f / 0.6f); // 32   SecondAttack
             hasHitPlayer = false;
-            DealDamage();
+            DealDamage(0);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(0);
+            yield return new WaitForSeconds(0.005f / 0.6f); // 37
+            DealDamage(3);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(3);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(3);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(3);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(3);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(3);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(3);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(3);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(3);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
-            yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(3);
+            yield return new WaitForSeconds(0.005f / 0.6f); // 42
+            DealDamage(2);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(2);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(2);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(2);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(2);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(2);
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(2);
 
             yield return new WaitForSeconds(0.005f / 0.6f);
-            DealDamage();
+            DealDamage(2);
             yield return new WaitForSeconds(0.005f / 0.6f); // 46/60
+            DealDamage(2);
 
             yield return new WaitForSeconds(0.14f / 0.6f); // 60/60
 
@@ -322,6 +326,18 @@ namespace BehaviorDesigner.Runtime.Tasks
                 else if (comboFirstAttack == 2)
                 {
                     var collisionDetected = Physics2D.OverlapBoxAll(doubleSlashPos2.position, doubleSlashSize2, 0);
+                    foreach (Collider2D attackable in collisionDetected)
+                    {
+                        if (LayerMask.LayerToName(attackable.gameObject.layer) == "Player" && !hasHitPlayer)
+                        {
+                            GetComponent<Enemy>().DealDamageToPlayer(damages);
+                            hasHitPlayer = true;
+                        }
+                    }
+                }
+                else if (comboFirstAttack == 3)
+                {
+                    var collisionDetected = Physics2D.OverlapBoxAll(new UnityEngine.Vector3(doubleSlashPos.position.x + 0.34f, doubleSlashPos.position.y, doubleSlashPos.position.z), doubleSlashSize, 0);
                     foreach (Collider2D attackable in collisionDetected)
                     {
                         if (LayerMask.LayerToName(attackable.gameObject.layer) == "Player" && !hasHitPlayer)
